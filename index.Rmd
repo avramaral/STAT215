@@ -1,0 +1,6 @@
+---
+title: 'Applied Statistics with R (STAT 215)'
+author: 'André Victor Ribeiro Amaral'
+---
+
+This page provides auxiliary material for the **Applied Statistics with R** (STAT 215) course.
