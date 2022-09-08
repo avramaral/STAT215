@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="André Victor Ribeiro Amaral" />
+
+
+<title>Tutorial 02</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STAT 215</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tutorial01.html">Tutorial 01</a>
+</li>
+<li>
+  <a href="tutorial02.html">Tutorial 02</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://avramaral.github.io/">
+    <span class="fa fa-globe"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial 02</h1>
+<h4 class="author">André Victor Ribeiro Amaral</h4>
+
+</div>
+
+
+<!-- > The solution can be found [here](./sol_NNefvA.html). -->
+<div id="introduction" class="section level2 unnumbered">
+<h2 class="unnumbered">Introduction</h2>
+<p>For this problem set, we will use the following libraries</p>
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(zoo)
+library(rgeoboundaries)
+library(patchwork)
+library(viridis)</code></pre>
+<p>Throughout the tutorial, consider the following scenario. Let <span class="math inline">\(\{y_{it}; i = 1, \cdots, I; t = 1, \cdots, T\}\)</span> denotes a multivariate time series of disease counts in each Saudi Arabia region, such that <span class="math inline">\(I = 13\)</span> refers to the number of considered regions and <span class="math inline">\(T = 36\)</span> to the length of the time series. In particular, we will model <span class="math inline">\(Y_{it}|Y_{i,(t-1)} = y_{i,(t-1)} \sim \text{Poisson}(\lambda_{it})\)</span>, such that <span class="math inline">\(\log(\lambda_{it}) = \beta_0 + e_{i} + \beta_1 \cdot t + \beta_2 \cdot \sin(\omega t) + \beta_3 \cdot \cos(\omega t)\)</span>, where <span class="math inline">\(e_i\)</span> corresponds to the population fraction in region <span class="math inline">\(i\)</span> and <span class="math inline">\(\omega = 2\pi / 12\)</span>. Also, we have information about the population size and proportion of men in each region, as well as the number of deaths linked to each element of the <span class="math inline">\(\{y_{it}\}_{it}\)</span> series.</p>
+<p>You can download the <code>.csv</code> file <a href="./others/r4ds.csv">here</a>. And you read the file and convert it to a <code>tibble</code> object in the following way</p>
+<pre class="r"><code>data &lt;- readr::read_csv(file = &#39;others/r4ds.csv&#39;)</code></pre>
+<pre><code>## Rows: 468 Columns: 6
+## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (1): region
+## dbl  (4): n_cases, pop, men_prop, n_deaths
+## date (1): date
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>head(data, 5)</code></pre>
+<pre><code>## # A tibble: 5 × 6
+##   date       region           n_cases     pop men_prop n_deaths
+##   &lt;date&gt;     &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 2018-01-01 Eastern               33 4105780    0.403        3
+## 2 2018-01-01 Najran                23  505652    0.486        1
+## 3 2018-01-01 Northern Borders      30  320524    0.666        6
+## 4 2018-01-01 Ha’il                 36  597144    0.601        3
+## 5 2018-01-01 Riyadh                38 6777146    0.559        6</code></pre>
+<p>The code to generated such a data set can be found <a href="./others/codeR.R">here</a>.</p>
+<p><span class="math inline">\(\phantom{-}\)</span></p>
+</div>
+<div id="problem-01" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 01</h2>
+<p>Now, to manipulate our data set, we will use the <code>dplyr</code> package. From <a href="https://dplyr.tidyverse.org/">its documentation</a>, we can see that there are 5 main methods, namely, <code>mutate()</code>, <code>select()</code>, <code>filter()</code>, <code>summarise()</code>, and <code>arrange()</code>. We will use them all.</p>
+<ul>
+<li><p>Start by selecting the <code>date</code>, <code>region</code>, and <code>n_cases</code> from our original data set. To do this, use the pipe operator <code>%&gt;%</code> (in <code>RStudio</code>, you may use the shortcut <code>Ctrl + Shift + M</code>).</p></li>
+<li><p>Using <code>?tidyselect::select_helpers</code>, one may find useful functions that can be combined with <code>select()</code>. For instance, select all columns that start with “<code>n_</code>”.</p></li>
+<li><p>Aiming to obtain more meaningful sliced data sets, use the <code>filter()</code> and <code>select()</code> functions to select the the dates and regions for which the number of cases is greater than 40.</p></li>
+<li><p>Also, select the date, name of the region, number of cases, and number of deaths for which the region is Eastern or Najran <code>AND</code> the date is greater than <code>2019-01-01</code> (you may want to use the <code>lubridate</code> package to deal with dates).</p></li>
+<li><p>Now, select the date, name of the region, number of cases, and number of deaths for which the number of cases is larger than <code>700</code> <code>OR</code> the number of deaths is equal to <code>10</code> and arrange, in a descending order for <code>n_cases</code>, the results.</p></li>
+<li><p>Next, using the <code>mutate()</code> function, create a new column into the original data set that shows the cumulative sum for the number of deaths (and name it <code>cum_deaths</code>), and select the number of deaths and this newly created column.</p></li>
+<li><p>Using the <code>lag()</code> and <code>drop_na()</code> functions, create a new column named <code>n_cases_lag2</code> and another one named <code>n_deaths_lag3</code> that are copies of <code>n_cases</code> and <code>n_deaths</code> but with lags 2 and 3, respectively. Then, drop the rows with <code>NA</code>s in the <code>n_cases_lag2</code> column and select all but the <code>date</code> and <code>region</code> columns.</p></li>
+<li><p>Now, the goal is work with the <code>group_by()</code> function. To do this, group the data set by region, and select the three first columns.</p></li>
+<li><p>Combining a few different functions, select all but the <code>pop</code> column and create a new one (named <code>norm_cases</code>) that shows the normalized number of cases by date.</p></li>
+<li><p>Using the <code>summarise()</code> (or <code>summarize()</code>) function, get the average and variance for the variables <code>n_cases</code> and <code>n_deaths</code>, as well as the total number of rows.</p></li>
+<li><p>You will notice that the results from the above item do not seem very impressive. However, we can combine <code>summarize()</code> with <code>group_by()</code> to get more meaningful statistics. For instance, obtain similar results as before, but for each region.</p></li>
+<li><p>And as in <code>SQL</code>, in <code>tidyverse</code>, there are also functions that make joining two tibbles possible. From the <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">documentation page</a>, we have <code>inner_join()</code>, <code>left_join</code>, <code>right_join()</code> and <code>full_join()</code>. As an example, consider the following data set, which shows the (fake) mean temperature (in Celsius) in almost all regions and studied months in Saudi Arabia. Assuming the previous data set is in <code>data</code>,</p></li>
+</ul>
+<pre class="r"><code>set.seed(0)
+n &lt;- (nrow(data) - 3)
+new_data &lt;- tibble(id = 1:n, date = data$date[1:n], region = data$region[1:n], temperature = round(rnorm(n, 30, 2), 1))
+new_data</code></pre>
+<pre><code>## # A tibble: 465 × 4
+##       id date       region           temperature
+##    &lt;int&gt; &lt;date&gt;     &lt;chr&gt;                  &lt;dbl&gt;
+##  1     1 2018-01-01 Eastern                 32.5
+##  2     2 2018-01-01 Najran                  29.3
+##  3     3 2018-01-01 Northern Borders        32.7
+##  4     4 2018-01-01 Ha’il                   32.5
+##  5     5 2018-01-01 Riyadh                  30.8
+##  6     6 2018-01-01 Asir                    26.9
+##  7     7 2018-01-01 Mecca                   28.1
+##  8     8 2018-01-01 Tabuk                   29.4
+##  9     9 2018-01-01 Medina                  30  
+## 10    10 2018-01-01 Qasim                   34.8
+## # … with 455 more rows</code></pre>
+<p>Notice that there is a column named <code>id</code> on <code>new_data</code>. We will need it to link the new tibble to the old one. Thus, let’s create a similar column in <code>data</code>.</p>
+<pre class="r"><code>data &lt;- data %&gt;% add_column(id = 1:(nrow(data))) %&gt;% select(c(7, 1:6))
+head(data, 1)</code></pre>
+<pre><code>## # A tibble: 1 × 7
+##      id date       region  n_cases     pop men_prop n_deaths
+##   &lt;int&gt; &lt;date&gt;     &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1     1 2018-01-01 Eastern      33 4105780    0.403        3</code></pre>
+<p>Finally, incorporate the new data into the original tibble by using, for example, the <code>left_join()</code> function.</p>
+<p><span class="math inline">\(\phantom{-}\)</span></p>
+</div>
+<div id="problem-02" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 02</h2>
+<p>For this problem, we will use <code>ggplot2</code> to produce different plots.</p>
+<ul>
+<li><p>But before, from the original data set, create an object that contains the columns <code>date</code>, <code>region</code>, <code>n_men</code>, <code>n_women</code>, <code>n_cases</code>, and <code>n_deaths</code>, such that <code>n_men</code> and <code>n_women</code> correspond to the number of men and the number of women, respectively (to do this, recall that <code>men_prop</code> represents the proportion of men in the population for a given region).</p></li>
+<li><p>Now, the main goal is visualize the studied data set. To do this, we will mainly rely on the <code>ggplot2</code> library, which is also included in the <code>tidyverse</code> universe. Start by creating a line chart for the number of cases in each region (all in the same plot) over the months (when I tried to plot it in my <code>RMarkdown</code> document, I had problems with the <code>Ha’il</code> name. If the same happens to you, try to replace it by <code>Hail</code>). Map <code>region</code> to <code>color</code>.</p></li>
+<li><p>When plotting, we can also map more than one property at a time. For instance, plot a dot chart for the number of cases in each region over months that maps <code>region</code> to <code>color</code> and <code>n_deaths</code> to <code>size</code>.</p></li>
+<li><p>Now, using the function <code>rollmean()</code> from the <code>zoo</code> package, plot the number of cases in Mecca (notice that you will have to filter your data set) over time and the moving average (with window <span class="math inline">\(\text{k} = 3\)</span>) of the same time series.</p></li>
+</ul>
+<hr />
+<p>Now, we will plot the map of Saudi Arabia divided into the given regions. To do this, we will need to work with a <code>shapefile</code> for the boundaries of the Kingdom. This type of file may be found online. However, there are some <code>R</code> packages that provide such data. For instance, we can use the <code>geoboundaries('Saudi Arabia', adm_lvl = 'adm1')</code> function from the <code>rgeoboundaries</code> package to obtain the desired data set.</p>
+<p>After downloading the data, you can plot it using the <code>ggplot(data) + geom_sf()</code> functions (depending on what you are trying to do, you may have to install (and load) the <code>sp</code> and/or <code>sf</code> libraries).</p>
+<pre class="r"><code>KSA_shape &lt;- geoboundaries(&#39;Saudi Arabia&#39;, adm_lvl = &#39;adm1&#39;)
+KSA_shape$shapeName &lt;- data$region[1:13]
+ggplot(data = KSA_shape) + 
+  geom_sf() + 
+  geom_sf_label(aes(label = shapeName)) +
+  theme_bw() + 
+  labs(x = &#39;Longitude&#39;, y = &#39;Latitude&#39;, title = &#39;Map of Saudi Arabia&#39;) + 
+  theme(text = element_text(family = &#39;LM Roman 10&#39;))</code></pre>
+<p><img src="tutorial02_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<ul>
+<li>As a final task, plot two versions of the above map side-by-side. On the left, the colors should represent the population size for men in each region; similarly, on the right, the population size for women (to combine plots in this way, you may want to use the <code>patchwork</code> package. And for different color palettes, you may use the <code>viridis</code> package). Use the same scale, so that the values are comparable.</li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
