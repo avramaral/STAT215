@@ -8,7 +8,7 @@ output:
     number_sections: true
 ---
 
-<!-- > The solution can be found [here](./sol_QuYDke.html). -->
+> The solution can be found [here](./sol_QuYDke.html).
 
 ## Problem 01 {-}
 
