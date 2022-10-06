@@ -51,8 +51,6 @@ W * X
 Y %*% Z
 ```
 
-$\phantom{-}$
-
 ## Problem 02 {-}
 
 Create a matrix $[\texttt{A}]_{3 \times 3}$, such that $\texttt{a}_{ij} = i + j$, $\forall i, j$. Also, create $[\texttt{B}]_{3 \times 3}$, such that $\texttt{b}_{ij} = \texttt{TRUE}$, if $i + j$ is even, and $\texttt{b}_{ij} = \texttt{FALSE}$, otherwise. Finally, create $[\texttt{C}]_{3 \times 3}$, such that $\texttt{c}_{ij} = 1$, if $i + j \in \{1, 2, 3\}$, and $\texttt{c}_{ij} = 0$, otherwise.
@@ -73,8 +71,6 @@ func_C <- function (c) {return(as.numeric(c %in% c(1, 2, 3)))}
 C <- apply(X = A, MARGIN = c(1, 2), func_C); C
 ```
 
-$\phantom{-}$
-
 ## Problem 03 {-}
 
 Write a function for computing $n!$, for any $n$ non-negative integer. Print the 10 first numbers from the sequence $(\texttt{f}_n)_n$, such that $\texttt{f}_n = n!$, for all $n \in \mathbb{Z}_{+}$. Also, for $n = 10$, compare your result with the \texttt{gamma()} function from \texttt{R} (recall that, for any positive integer $n$, $\Gamma(n) = (n - 1)!$).
@@ -87,8 +83,6 @@ factorial <- function (n) {
 sapply(X = 0:9, FUN = factorial)
 print(paste0('gamma(10) = ', gamma(10), ', and 9! = ', factorial(9)))
 ```
-
-$\phantom{-}$
 
 ## Problem 04 {-}
 
@@ -142,8 +136,6 @@ r <- r_seq(5); r
 A <- rbind(p, q, r); A
 B <- cbind(p, q, r); B
 ```
-
-$\phantom{-}$
 
 ## Problem 05 {-}
 

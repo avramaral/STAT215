@@ -1,0 +1,51 @@
+---
+title: 'Tutorial 04'
+author: 'André Victor Ribeiro Amaral'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+> The solution can be found [here](./sol_TOlkuB.html).
+
+## Introduction {-}
+
+For this tutorial session, we will analyze three (linear regression) problems from top to bottom.
+
+## Problem 01 {-}
+
+For this problem, we will analyse data about the mileage per gallon performances of various cars. The data set was retrieved from [this page](https://archive.ics.uci.edu/ml/datasets/Auto+MPG) (with changes). You can download the `.csv` file [here](./others/car.csv).
+
+```{r}
+col.names <- c('mpg', 'cylinders', 'displacement', 'hp', 'weight', 'acceleration', 'year', 'origin')
+car <- read.csv(file = 'others/car.csv', header = FALSE, sep = ',', col.names = col.names)
+head(car, 5)
+```
+
+Explore the data set, fit an appropriate linear model, check the model assumptions, and plot the results. At the end, make predictions for unknown values.
+
+## Problem 02 {-}
+
+For this problem, we will analyse data collected in an observational study in a semiconductor manufacturing plant. Data were retrieved from the [**Applied Statistics and Probability for Engineers** book](https://www.wiley.com/en-us/Applied+Statistics+and+Probability+for+Engineers%2C+7th+Edition-p-9781119400363). You can download the `.csv` file [here](./others/wire_bond.csv). In this plant, the finished semiconductor is wire-bonded to a frame. The variables reported are pull strength (a measure of the amount of force required to break the bond), the wire length, and the height of the die.
+
+```{r}
+col.names <- c('pull_strength', 'wire_length', 'height')
+wire <- read.csv(file = 'others/wire_bond.csv', header = FALSE, sep = ',', col.names = col.names)
+head(wire, 5)
+```
+
+Explore the data set, fit an appropriate linear model for the data, check the model assumptions, and plot the fitted plan. At the end, make predictions for unknown values.
+
+## Problem 03 {-}
+
+For this problem, we will analyse a data set with 6 variable (1 response variable + 6 covariates). Although their meaning may not be stated, we will see how important feature selection is when performing multiple regression analysis.  You can download the `.csv` file [here](./datasets/data.csv).
+
+```{r}
+col.names <- c('var1', 'var2', 'var3', 'var4', 'var5', 'var6', 'response')
+data <- read.csv(file = 'others/data.csv', header = FALSE, sep = ',', col.names = col.names)
+head(data, 5)
+```
+
+Explore the data set, fit an appropriate (and reduced, based on any feature selection procedure) linear model for the data, check the model assumptions, and plot the results. At the end, make predictions for unknown values.

@@ -43,19 +43,13 @@ In `R`, and using just one line of code, create the following matrices and assig
 \end{align}
 Also, compute $\texttt{W}\odot\texttt{X}$ and $\texttt{Y} \cdot \texttt{Z}$, such that $\odot$ represents the element-wise multiplication and $\cdot$ matrix multiplication.
 
-$\phantom{-}$
-
 ## Problem 02 {-}
 
 Create a matrix $[\texttt{A}]_{3 \times 3}$, such that $\texttt{a}_{ij} = i + j$, $\forall i, j$. Also, create $[\texttt{B}]_{3 \times 3}$, such that $\texttt{b}_{ij} = \texttt{TRUE}$, if $i + j$ is even, and $\texttt{b}_{ij} = \texttt{FALSE}$, otherwise. Finally, create $[\texttt{C}]_{3 \times 3}$, such that $\texttt{c}_{ij} = 1$, if $i + j \in \{1, 2, 3\}$, and $\texttt{c}_{ij} = 0$, otherwise.
 
-$\phantom{-}$
-
 ## Problem 03 {-}
 
 Write a function for computing $n!$, for any $n$ non-negative integer. Print the 10 first numbers from the sequence $(\texttt{f}_n)_n$, such that $\texttt{f}_n = n!$, for all $n \in \mathbb{Z}_{+}$. Also, for $n = 10$, compare your result with the \texttt{gamma()} function from \texttt{R} (recall that, for any positive integer $n$, $\Gamma(n) = (n - 1)!$).
-
-$\phantom{-}$
 
 ## Problem 04 {-}
 
@@ -72,8 +66,6 @@ Create 3 five-element (row) vectors $\texttt{p}$, $\texttt{q}$, and $\texttt{r}$
 \texttt{p}^{\text{T}} & \texttt{q}^{\text{T}} & \texttt{r}^{\text{T}}
 \end{pmatrix}.
 \end{align}
-
-$\phantom{-}$
 
 ## Problem 05 {-}
 

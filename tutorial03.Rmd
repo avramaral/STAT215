@@ -1,0 +1,116 @@
+---
+title: 'Tutorial 03'
+author: 'André Victor Ribeiro Amaral'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+> The solution can be found [here](./sol_XPuuFk.html).
+
+## Problem 01 {-}
+
+An experiment is designed to test the tensile strength of Portland cement. Four different mixing techniques that can be used economically are tested and the resulting tensile strength is measured. A completely randomized experiment was conducted with four replications for each mixing technique and the following data were collected
+
+```{r}
+data <- data.frame(mixingType = as.factor(rep(x = LETTERS[1:4], each = 4)), strength = c(3129, 3000, 2865, 2890, 3200, 3300, 2975, 3150, 2800, 2900, 2985, 3050, 2600, 2700, 2600, 2765))
+data
+```
+a) Do boxplots for the tensile strength as a function of treatment. Comment on what you observe.
+
+b) Calculate summary statistics for the different treatments. Comment on the values for the variance.
+
+c) Do an analysis of variance table and test whether the mixing techniques have an effect on the tensile strength. Use level $\alpha = 0.01$ for this test. What are your conclusions?
+
+d) What are the estimated values for the average values for the four treatments $\hat{\mu} + \hat{\tau}_i$, $i = 1, \cdots, 4$? What are the estimated values for the effects $\tau_i$, $\forall i$? Use `model.tables()` for this.
+
+e) What are the estimated values for the variance $\sigma^2$ and standard deviation $\sigma$ of the experimental error?
+
+f) Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?
+
+g) So far we have judged whether variances are uniform across treatment levels using graphs but there is a test for this, known as Levene’s test. This test is available in the `car` package as `leveneTest()`, with argument the result of an `lm()` model. Use this test to determine whether variances are homogeneous across mixing techniques.
+
+h) Use the Shapiro-Wilk test for normality on the normalized residuals.
+
+i) Do pairwise comparisons using Tukey’s Honest Significant Difference method. Plot the confidence intervals. What comparisons are significant according to this method?
+
+j) If you had to choose a mixing technique, which one would you choose and why?
+
+## Problem 02 {-}
+
+For this exercise, we will use the data set `InsectSprays`, which is available in `R`. In this experiment, 6 different insecticides were used and the number of dead insects in each plot were counted. There were 12 replications for each treatment level (insecticide), for a total of 72 observations.
+
+```{r}
+head(InsectSprays)
+```
+
+a) Draw a boxplot for the results and add axes labels and a title. Add the points for each treatment level. Observe that there is *overplotting*. Add some noise in the horizontal direction to avoid this problem. Comment on what you observe.
+
+b) Do an analysis of variance and test whether the different insecticides have an effect. Use level $\alpha = 0.01$ for this test. What are your conclusions?
+
+c) What are the estimated values for the average values for the six treatments $\hat{\mu} + \hat{\tau}_i$, $i = 1, \cdots, 6$? What are the estimated values for the effects $\tau_i$, $\forall i$? Use `model.tables()` for this.
+
+d) What are the estimated values for the variance $\sigma^2$ and standard deviation $\sigma$ of the experimental error?
+
+e) Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?
+
+f) Use Levene’s test for equal variances and Shapiro-Wilk for normality using this model and comment on your results.
+
+g) Consider an alternative model using the square root of the number of counts. Obtain the analysis of variance table and compare with the previous model.
+
+h) Draw the diagnostic plots for this model and comment.
+
+i) Again, use Levene’s tests and Shapiro-Wilk and comment on your results
+
+## Problem 03 {-}
+
+For this exercise, we will use the data set `ToothGrowth`, which is available in `R`.
+
+a) Explore the data in `ToothGrowth`.
+
+b) `dose` is a numerical variable and we would like it to be categorical. Transform it to a factor. Make sure to preserve the order.
+
+c) Do a boxplot with the following command and comment on the result.
+
+```{r}
+boxplot(len ~ supp * dose, data = ToothGrowth)
+```
+
+d) Use `interaction.plot()` to explore possible interactions between the factors.
+
+e) Use `lm()` to build and analyze a two-way model.
+
+f) Use `aov()` to build and analyze a two-way model.
+
+g) Plot the diagnostics graphs and comment on the results.
+
+h) Use `TukeyHSD()` with the option `which = c('dose')`. Comment.
+
+i) Fit a model without interactions using `lm()` and compare with the complete model using anova. What is your conclusion?
+
+## Problem 04 {-}
+
+For this problem, download (and read) the `problem4.csv` file [here](./others/problem4.csv).
+
+```{r}
+data <- read.csv('others/problem4.csv', header = T) 
+data$A <- as.factor(data$A)
+data$B <- as.factor(data$B)
+data$C <- as.factor(data$C)
+```
+
+a) Look at the structure and explore the data.
+
+b) Using `lm()` fit a complete model to this data.
+
+c) Plot the interactions and comment.
+
+d) Using update and a critical p-value of $0.05$, remove all interactions that are not significant. After removing each term, produce a new ANOVA table to decide on the next step. What is the minimal adequate model? 
+
+e) Compare your final model with the complete model using `anova()`. Is it satisfactory?
+
+f) Plot the diagnostics graphs and comment on the results.
+
+

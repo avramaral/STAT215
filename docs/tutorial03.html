@@ -12,7 +12,7 @@
 <meta name="author" content="André Victor Ribeiro Amaral" />
 
 
-<title>Tutorial 01</title>
+<title>Tutorial 03</title>
 
 <script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -357,94 +357,107 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Tutorial 01</h1>
+<h1 class="title toc-ignore">Tutorial 03</h1>
 <h4 class="author">André Victor Ribeiro Amaral</h4>
 
 </div>
 
 
 <blockquote>
-<p>The solution can be found <a href="./sol_QuYDke.html">here</a>.</p>
+<p>The solution can be found <a href="./sol_XPuuFk.html">here</a>.</p>
 </blockquote>
 <div id="problem-01" class="section level2 unnumbered">
 <h2 class="unnumbered">Problem 01</h2>
-<p>In <code>R</code>, and using just one line of code, create the following matrices and assign them to the variables <code>W</code>, <code>X</code>, <code>Y</code>, and <code>Z</code>, respectively. <span class="math display">\[\begin{align}
-\texttt{W} = 
-\begin{pmatrix}
-1 &amp; 4 &amp; 7 \\
-2 &amp; 5 &amp; 8 \\
-3 &amp; 6 &amp; 9
-\end{pmatrix},~
-\texttt{X} = 
-\begin{pmatrix}
-1 &amp; 2 &amp; 3 \\
-4 &amp; 5 &amp; 6 \\
-7 &amp; 8 &amp; 9
-\end{pmatrix},~
-
-\texttt{Y} = 
-\begin{pmatrix}
-1 &amp; 0 &amp; 0 \\
-0 &amp; 1 &amp; 0 \\
-0 &amp; 0 &amp; 1
-\end{pmatrix}, \text{ and }
-
-\texttt{Z} = 
-\begin{pmatrix}
-0 &amp; 0 &amp; 1 \\
-0 &amp; 1 &amp; 0 \\
-1 &amp; 0 &amp; 0
-\end{pmatrix}.
-\end{align}\]</span> Also, compute <span class="math inline">\(\texttt{W}\odot\texttt{X}\)</span> and <span class="math inline">\(\texttt{Y} \cdot \texttt{Z}\)</span>, such that <span class="math inline">\(\odot\)</span> represents the element-wise multiplication and <span class="math inline">\(\cdot\)</span> matrix multiplication.</p>
+<p>An experiment is designed to test the tensile strength of Portland cement. Four different mixing techniques that can be used economically are tested and the resulting tensile strength is measured. A completely randomized experiment was conducted with four replications for each mixing technique and the following data were collected</p>
+<pre class="r"><code>data &lt;- data.frame(mixingType = as.factor(rep(x = LETTERS[1:4], each = 4)), strength = c(3129, 3000, 2865, 2890, 3200, 3300, 2975, 3150, 2800, 2900, 2985, 3050, 2600, 2700, 2600, 2765))
+data</code></pre>
+<pre><code>##    mixingType strength
+## 1           A     3129
+## 2           A     3000
+## 3           A     2865
+## 4           A     2890
+## 5           B     3200
+## 6           B     3300
+## 7           B     2975
+## 8           B     3150
+## 9           C     2800
+## 10          C     2900
+## 11          C     2985
+## 12          C     3050
+## 13          D     2600
+## 14          D     2700
+## 15          D     2600
+## 16          D     2765</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li><p>Do boxplots for the tensile strength as a function of treatment. Comment on what you observe.</p></li>
+<li><p>Calculate summary statistics for the different treatments. Comment on the values for the variance.</p></li>
+<li><p>Do an analysis of variance table and test whether the mixing techniques have an effect on the tensile strength. Use level <span class="math inline">\(\alpha = 0.01\)</span> for this test. What are your conclusions?</p></li>
+<li><p>What are the estimated values for the average values for the four treatments <span class="math inline">\(\hat{\mu} + \hat{\tau}_i\)</span>, <span class="math inline">\(i = 1, \cdots, 4\)</span>? What are the estimated values for the effects <span class="math inline">\(\tau_i\)</span>, <span class="math inline">\(\forall i\)</span>? Use <code>model.tables()</code> for this.</p></li>
+<li><p>What are the estimated values for the variance <span class="math inline">\(\sigma^2\)</span> and standard deviation <span class="math inline">\(\sigma\)</span> of the experimental error?</p></li>
+<li><p>Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?</p></li>
+<li><p>So far we have judged whether variances are uniform across treatment levels using graphs but there is a test for this, known as Levene’s test. This test is available in the <code>car</code> package as <code>leveneTest()</code>, with argument the result of an <code>lm()</code> model. Use this test to determine whether variances are homogeneous across mixing techniques.</p></li>
+<li><p>Use the Shapiro-Wilk test for normality on the normalized residuals.</p></li>
+<li><p>Do pairwise comparisons using Tukey’s Honest Significant Difference method. Plot the confidence intervals. What comparisons are significant according to this method?</p></li>
+<li><p>If you had to choose a mixing technique, which one would you choose and why?</p></li>
+</ol>
 </div>
 <div id="problem-02" class="section level2 unnumbered">
 <h2 class="unnumbered">Problem 02</h2>
-<p>Create a matrix <span class="math inline">\([\texttt{A}]_{3 \times 3}\)</span>, such that <span class="math inline">\(\texttt{a}_{ij} = i + j\)</span>, <span class="math inline">\(\forall i, j\)</span>. Also, create <span class="math inline">\([\texttt{B}]_{3 \times 3}\)</span>, such that <span class="math inline">\(\texttt{b}_{ij} = \texttt{TRUE}\)</span>, if <span class="math inline">\(i + j\)</span> is even, and <span class="math inline">\(\texttt{b}_{ij} = \texttt{FALSE}\)</span>, otherwise. Finally, create <span class="math inline">\([\texttt{C}]_{3 \times 3}\)</span>, such that <span class="math inline">\(\texttt{c}_{ij} = 1\)</span>, if <span class="math inline">\(i + j \in \{1, 2, 3\}\)</span>, and <span class="math inline">\(\texttt{c}_{ij} = 0\)</span>, otherwise.</p>
+<p>For this exercise, we will use the data set <code>InsectSprays</code>, which is available in <code>R</code>. In this experiment, 6 different insecticides were used and the number of dead insects in each plot were counted. There were 12 replications for each treatment level (insecticide), for a total of 72 observations.</p>
+<pre class="r"><code>head(InsectSprays)</code></pre>
+<pre><code>##   count spray
+## 1    10     A
+## 2     7     A
+## 3    20     A
+## 4    14     A
+## 5    14     A
+## 6    12     A</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li><p>Draw a boxplot for the results and add axes labels and a title. Add the points for each treatment level. Observe that there is <em>overplotting</em>. Add some noise in the horizontal direction to avoid this problem. Comment on what you observe.</p></li>
+<li><p>Do an analysis of variance and test whether the different insecticides have an effect. Use level <span class="math inline">\(\alpha = 0.01\)</span> for this test. What are your conclusions?</p></li>
+<li><p>What are the estimated values for the average values for the six treatments <span class="math inline">\(\hat{\mu} + \hat{\tau}_i\)</span>, <span class="math inline">\(i = 1, \cdots, 6\)</span>? What are the estimated values for the effects <span class="math inline">\(\tau_i\)</span>, <span class="math inline">\(\forall i\)</span>? Use <code>model.tables()</code> for this.</p></li>
+<li><p>What are the estimated values for the variance <span class="math inline">\(\sigma^2\)</span> and standard deviation <span class="math inline">\(\sigma\)</span> of the experimental error?</p></li>
+<li><p>Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?</p></li>
+<li><p>Use Levene’s test for equal variances and Shapiro-Wilk for normality using this model and comment on your results.</p></li>
+<li><p>Consider an alternative model using the square root of the number of counts. Obtain the analysis of variance table and compare with the previous model.</p></li>
+<li><p>Draw the diagnostic plots for this model and comment.</p></li>
+<li><p>Again, use Levene’s tests and Shapiro-Wilk and comment on your results</p></li>
+</ol>
 </div>
 <div id="problem-03" class="section level2 unnumbered">
 <h2 class="unnumbered">Problem 03</h2>
-<p>Write a function for computing <span class="math inline">\(n!\)</span>, for any <span class="math inline">\(n\)</span> non-negative integer. Print the 10 first numbers from the sequence <span class="math inline">\((\texttt{f}_n)_n\)</span>, such that <span class="math inline">\(\texttt{f}_n = n!\)</span>, for all <span class="math inline">\(n \in \mathbb{Z}_{+}\)</span>. Also, for <span class="math inline">\(n = 10\)</span>, compare your result with the  function from  (recall that, for any positive integer <span class="math inline">\(n\)</span>, <span class="math inline">\(\Gamma(n) = (n - 1)!\)</span>).</p>
+<p>For this exercise, we will use the data set <code>ToothGrowth</code>, which is available in <code>R</code>.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Explore the data in <code>ToothGrowth</code>.</p></li>
+<li><p><code>dose</code> is a numerical variable and we would like it to be categorical. Transform it to a factor. Make sure to preserve the order.</p></li>
+<li><p>Do a boxplot with the following command and comment on the result.</p></li>
+</ol>
+<pre class="r"><code>boxplot(len ~ supp * dose, data = ToothGrowth)</code></pre>
+<p><img src="tutorial03_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li><p>Use <code>interaction.plot()</code> to explore possible interactions between the factors.</p></li>
+<li><p>Use <code>lm()</code> to build and analyze a two-way model.</p></li>
+<li><p>Use <code>aov()</code> to build and analyze a two-way model.</p></li>
+<li><p>Plot the diagnostics graphs and comment on the results.</p></li>
+<li><p>Use <code>TukeyHSD()</code> with the option <code>which = c('dose')</code>. Comment.</p></li>
+<li><p>Fit a model without interactions using <code>lm()</code> and compare with the complete model using anova. What is your conclusion?</p></li>
+</ol>
 </div>
 <div id="problem-04" class="section level2 unnumbered">
 <h2 class="unnumbered">Problem 04</h2>
-<p>Create 3 five-element (row) vectors <span class="math inline">\(\texttt{p}\)</span>, <span class="math inline">\(\texttt{q}\)</span>, and <span class="math inline">\(\texttt{r}\)</span>, such that <span class="math inline">\(p\)</span> contains the first 5 prime numbers, <span class="math inline">\(q\)</span> the first 5 numbers from the Fibonacci sequence, and <span class="math inline">\(r\)</span> the 5 first elements of the sequence <span class="math inline">\((\texttt{r}_n)_n\)</span>, such that <span class="math inline">\(\texttt{r}_n = \lfloor\sqrt{(n \cdot \pi)}\rfloor\)</span>, <span class="math inline">\(\forall n\)</span>, and <span class="math inline">\(\lfloor \cdot \rfloor\)</span> is the <em>floor</em> function. Do NOT compute the terms manually (write functions!), so that you can easily extend it to larger vectors. Also, create the matrices <span class="math display">\[\begin{align}
-\texttt{A} = 
-\begin{pmatrix}
-\texttt{p} \\
-\texttt{q} \\
-\texttt{r}
-\end{pmatrix}, \text{ and }
-\texttt{B} = 
-\begin{pmatrix}
-\texttt{p}^{\text{T}} &amp; \texttt{q}^{\text{T}} &amp; \texttt{r}^{\text{T}}
-\end{pmatrix}.
-\end{align}\]</span></p>
-</div>
-<div id="problem-05" class="section level2 unnumbered">
-<h2 class="unnumbered">Problem 05</h2>
-<p>Suppose that, for the population of male teenagers, we can model their height as <span class="math display">\[\begin{align}
-\texttt{height}_i = \beta_0 + \beta_1 \cdot \texttt{age}_i + \epsilon_i, \text{ such that } \epsilon_i \sim \text{Normal}(0, \sigma^2_{\epsilon}).
-\end{align}\]</span> Now, for a random sample of size <span class="math inline">\(n = 20\)</span>, we want to estimate <span class="math inline">\(\boldsymbol{\beta} = (\beta_0, \beta_1)^{\text{T}}\)</span> as <span class="math inline">\(\hat{\boldsymbol{\beta}} = (\text{X}^{\text{T}}\text{X})^{-1}\text{X}^{\text{T}}\boldsymbol{y}\)</span>, such that <span class="math display">\[\begin{align}
-\text{X} = 
-\begin{pmatrix}
-1 &amp; \texttt{age}_1 \\
-\vdots &amp; \vdots \\
-1 &amp; \texttt{age}_{20}
-\end{pmatrix}, \text{ and }
-\boldsymbol{y} = 
-\begin{pmatrix}
-\texttt{height}_1 \\
-\vdots \\
-\texttt{height}_{20}
-\end{pmatrix}.
-\end{align}\]</span> Compute <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and plot <span class="math inline">\(\hat{\boldsymbol{y}} = \text{X}\hat{\boldsymbol{\beta}}\)</span>. For this exercise, generate the data set using the following code</p>
-<pre class="r"><code>set.seed(999)
-beta_0 &lt;- 140
-beta_1 &lt;- 2
-ages &lt;- sample(x = 12:18, size = 20, replace = TRUE)
-heights &lt;- round(x = beta_0 + beta_1 * ages + rnorm(n = 10, mean = 0, sd = 2), 
-                 digits = 2)
-data &lt;- data.frame(heights = heights, ages = ages)</code></pre>
+<p>For this problem, download (and read) the <code>problem4.csv</code> file <a href="./others/problem4.csv">here</a>.</p>
+<pre class="r"><code>data &lt;- read.csv(&#39;others/problem4.csv&#39;, header = T) 
+data$A &lt;- as.factor(data$A)
+data$B &lt;- as.factor(data$B)
+data$C &lt;- as.factor(data$C)</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li><p>Look at the structure and explore the data.</p></li>
+<li><p>Using <code>lm()</code> fit a complete model to this data.</p></li>
+<li><p>Plot the interactions and comment.</p></li>
+<li><p>Using update and a critical p-value of <span class="math inline">\(0.05\)</span>, remove all interactions that are not significant. After removing each term, produce a new ANOVA table to decide on the next step. What is the minimal adequate model?</p></li>
+<li><p>Compare your final model with the complete model using <code>anova()</code>. Is it satisfactory?</p></li>
+<li><p>Plot the diagnostics graphs and comment on the results.</p></li>
+</ol>
 </div>
 
 

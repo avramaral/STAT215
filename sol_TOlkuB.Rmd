@@ -1,0 +1,432 @@
+---
+title: 'Tutorial 04'
+author: 'André Victor Ribeiro Amaral'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+## Introduction {-}
+
+For this tutorial session, we will analyze three (linear regression) problems from top to bottom.
+
+## Problem 01 {-}
+
+For this problem, we will analyse data about the mileage per gallon performances of various cars. The data set was retrieved from [this page](https://archive.ics.uci.edu/ml/datasets/Auto+MPG) (with changes). You can download the `.csv` file [here](./others/car.csv).
+
+```{r}
+col.names <- c('mpg', 'cylinders', 'displacement', 'hp', 'weight', 'acceleration', 'year', 'origin')
+car <- read.csv(file = 'others/car.csv', header = FALSE, sep = ',', col.names = col.names)
+head(car, 5)
+```
+
+Explore the data set, fit an appropriate linear model, check the model assumptions, and plot the results. At the end, make predictions for unknown values.
+
+### Exploring the data set {-}
+
+Let's start with the `summary()` function.
+
+```{r}
+summary(car)
+```
+
+As one can see from the above table, some multi-valued discrete attributes are being interpreted as integer values; also, we have `NA`'s for the `mpg` and `horsepower` attributes. To verify (and change) the variable types, we can do the following
+
+```{r}
+car$cylinders <- as.factor(car$cylinders)
+car$year      <- as.factor(car$year)
+car$origin    <- as.factor(car$origin)
+```
+
+Also, as there are too many classes for the `year`, and as a way to make our analyses simpler, let's categorize the cars into `old` and `new`, such that cars from before `77` will be labeled as `1` and the remaining cars will be labeled as `2`.
+
+```{r}
+car$year <- as.factor(sapply(X = car$year, FUN = function (item) { ifelse(item %in% 70:76, 1, 2) }))
+summary(car)
+```
+
+Now, let's deal with the missing values. Different approaches could have been taken here, and they highly depend on your problem (and your knowledge about the problem). For this particular example, suppose that we want to describe the `mpg` data as a function of the `hp` and `year`. Since we do not now much about this data, a simpler options would be to exclude the instances with missing values for the `hp`. Let's do this.
+```{r}
+car2 <- car[!is.na(car$hp), c('mpg', 'hp', 'year')]
+summary(car2)
+```
+Given this smaller data set, our goal might be to predict the missing values for `mpg`. However, to do this, we have to have a data set with no `NA`'s. Let's name it `car3`.
+```{r}
+car3 <- car2[!is.na(car2$mpg), ]
+```
+As a last exploration step, let's plot our data set.
+```{r}
+plot(mpg ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+legend('topright', c('old', 'new'), col = unique(as.numeric(car3$year) + 1), pch = 19)
+```
+
+### Fitting a model {-}
+
+From the previous plot, although we suspect that a linear model might not be appropriate for this data set as it is, let's fit it and analyse the results. 
+
+In particular, we will fit the following model
+
+$$
+\texttt{mpg}_i = \beta_0 + \texttt{hp}_i \cdot \beta_1 + \epsilon_i; \text{ such that } \epsilon_i \overset{\text{i.i.d.}}{\sim} \text{Normal}(0, \sigma^2_{\epsilon})
+$$
+
+```{r}
+model <- lm(formula = mpg ~ hp, data = car3)
+summary(model)
+```
+
+From the above summary, we have strong evidences that both $\beta_0$ and $\beta_1$ are different than 0. The residuals do not seem symmetric, though. Also, $\text{R}^2 =$ `r summary(model)$r.squared`. Now, let's plot the fitted model. 
+
+```{r}
+plot(mpg ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+abline(model)
+legend('topright', c('old', 'new'), col = unique(as.numeric(car3$year) + 1), pch = 19)
+```
+
+However, notice that the relation between `hp` and `mpg` does not seem to be linear, and the `age` might also provide information when describe the response variable. Thus, before taking any conclusions from the fitted model, let's do an analysis of residuals. We will focus on the "Residuals vs Fitted" and "Normal Q-Q" plots.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(model, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+From the "Residuals vs Fitted" plots, we may see that a linear relationship does not correctly describe how `mpg` is written as a function of `hp`, since we can see a pattern for the residuals (as opposed to a "well spread and random" cloud of points around $y = 0$). Also, from the "Normal Q-Q" plot, the residuals seem to be normally distributed (we will test it). 
+
+To confirm these visual analyses, let's conduct a proper test. To check for the assumption of equal variance, since we have a quantitative regressor, we can use the Score Test, available in the `car` package through the `ncvTest()` function. Also, to check for the normality of the residuals, we will use the Shapiro-Wilk test (`shapiro.test()`).
+
+```{r}
+library('car')
+ncvTest(model)
+shapiro.test(residuals(model))
+```
+
+As the p-values are too small for the first test, we have strong evidences against equal variance. On the other hand, we fail to reject the hypothesis of normally distributed residuals (with a significance level of $5\%$). Thus, as at least one assumption for this model does not hold, the results might not be reliable.
+
+As a way to overcome this issue, we will transform the data according to the following rule
+
+$$ 
+w(\lambda) = 
+\begin{cases}
+  (y^{\lambda} - 1)/\lambda &, \text{ if } \lambda \neq 0 \\
+  \log(y) &, \text{ if } \lambda = 0.
+\end{cases}
+$$
+
+This can be achieved by using the `boxCox()` function from the `car` package. Based on it, we will retrieve the value of `lambda` and will apply the above transformation.
+
+```{r}
+bc <- boxCox(model)
+(lambda <- bc$x[which.max(bc$y)])
+```
+
+Now, let's create a function to transform our data based on the value of $\lambda$ and based on the above rule. We will name it `tranfData()`. Also, we will create a function to transform our data back to the original scale. We will name it `tranfData_back()`. This second function, if $\lambda \neq 0$, will be given by $y(\lambda) = (w\lambda + 1)^{1/\lambda}$.
+
+```{r}
+transfData <- function (data, lambda) { ((data ^ lambda - 1) / lambda) }
+transfData_back <- function (data, lambda) { ((data * lambda + 1) ^ (1 / lambda)) }
+```
+
+Therefore, we can easily transform our data, given $\lambda =$ `r round(lambda, 2)`, in the following way
+
+```{r}
+car3$mpg_transf <- sapply(X = car3$mpg, FUN = transfData, lambda = lambda)
+head(car3, 5)
+plot(mpg_transf ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+legend('topright', c('old', 'new'), col = unique(as.numeric(car3$year) + 1), pch = 19)
+```
+
+Finally, we can fit again a linear model for the transformed data.
+
+```{r}
+model2 <- lm(formula = mpg_transf ~ hp, data = car3)
+summary(model2)
+plot(mpg_transf ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+abline(model2)
+legend('topright', c('old', 'new'), col = unique(as.numeric(car3$year) + 1), pch = 19)
+```
+
+Also, we can analyse the diagnostic plots, as before. As well as conduct the appropriate tests.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(model2, which = c(1, 2))
+par(mfrow = c(1, 1))
+
+ncvTest(model2)
+shapiro.test(residuals(model2))
+```
+
+As we would expect, the results look much better now. However, we can still use information about `year`, which seems to play a role in explaining the response variable. That being said, let's fit this new model.
+
+Notice that we will consider a model with interaction (*an interaction occurs when an independent variable has a different effect on the outcome depending on the values of another independent variable*). For an extensive discussion on this topic, one can refer to [this link](https://www.medicine.mcgill.ca/epidemiology/joseph/courses/EPIB-621/interaction.pdf). 
+
+```{r}
+model3 <- lm(formula = mpg_transf ~ hp * year, data = car3)
+summary(model3)
+```
+
+From the above table, we can see that the interaction (`hp:year2`) is not significant; therefore, we can fit a simpler model.
+```{r}
+model4 <- lm(formula = mpg_transf ~ hp + year, data = car3)
+coeffi <- model4$coefficients
+summary(model4)
+plot(mpg_transf ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+abline(coeffi[[1]], coeffi[[2]], col = 2)
+abline(coeffi[[1]] + coeffi[[3]], coeffi[[2]], col = 3)
+legend('topright', c('old', 'new'), col = unique(as.numeric(car3$year) + 1), pch = 19)
+```
+
+Again, we can analyse the diagnostic plots and conduct the appropriate tests.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(model4, which = c(1, 2))
+par(mfrow = c(1, 1))
+
+ncvTest(model4)
+shapiro.test(residuals(model4))
+```
+
+Thus, for a significance level of $5\%$ we fail to reject the hypotheses of equal variance and normality. Meaning that this might be an appropriate model for our data. However, recall that we are modelling a transformed data set. We can get a model for our original data by doing the following. For a transformation $f$, we have the 
+
+\begin{align*}
+\texttt{mpg}_i &= f^{-1}(`r round(coeffi[[1]], 3)` `r round(coeffi[[2]], 3)`\texttt{hp}_i)&, \text{ if } \texttt{year} = 1 \\
+\texttt{mpg}_i &= f^{-1}((`r round(coeffi[[1]], 3)` + `r round(coeffi[[3]], 3)`) `r round(coeffi[[2]], 3)`\texttt{hp}_i)&, \text{ if } \texttt{year} = 2
+\end{align*}
+
+And we can plot it in the following way
+
+```{r}
+plot(mpg ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+curve(transfData_back(coeffi[[1]] + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 2)
+curve(transfData_back((coeffi[[1]] + coeffi[[3]]) + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 3)
+legend('topright', c('old', 'new'), col = unique(as.numeric(car3$year) + 1), pch = 19)
+```
+
+### Predicting unknown values {-}
+
+Now that we have a "good" fitted model, we can predict, as suggested before, the values of `mpg` for which we had `NA`'s before. We can do this in the following way
+```{r}
+pos_unk <- which(is.na(car2$mpg))
+unknown <- car2[is.na(car2$mpg), ]
+(predicted_values <- sapply(X = predict(object = model4, newdata = data.frame(hp = unknown$hp, year = unknown$year)), FUN = transfData_back, lambda = lambda))
+car2[is.na(car2$mpg), 'mpg'] <- predicted_values
+pch <- rep(19, nrow(car2)); pch[pos_unk] <- 9
+plot(mpg ~ hp, pch = pch, col = (as.numeric(year) + 1), data = car2)
+curve(transfData_back(coeffi[[1]] + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 2)
+curve(transfData_back((coeffi[[1]] + coeffi[[3]]) + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 3)
+legend('topright', c('old', 'new'), col = unique(as.numeric(car3$year) + 1), pch = 19)
+```
+
+---
+
+## Problem 02 {-}
+
+For this problem, we will analyse data collected in an observational study in a semiconductor manufacturing plant. Data were retrieved from the [**Applied Statistics and Probability for Engineers** book](https://www.wiley.com/en-us/Applied+Statistics+and+Probability+for+Engineers%2C+7th+Edition-p-9781119400363). You can download the `.csv` file [here](./others/wire_bond.csv). In this plant, the finished semiconductor is wire-bonded to a frame. The variables reported are pull strength (a measure of the amount of force required to break the bond), the wire length, and the height of the die.
+
+```{r}
+col.names <- c('pull_strength', 'wire_length', 'height')
+wire <- read.csv(file = 'others/wire_bond.csv', header = FALSE, sep = ',', col.names = col.names)
+head(wire, 5)
+```
+
+Explore the data set, fit an appropriate linear model for the data, check the model assumptions, and plot the fitted plan. At the end, make predictions for unknown values.
+
+### Exploring the data set {-}
+
+Let's start with the `summary()` function.
+
+```{r}
+summary(wire)
+```
+
+In this case, there are no missing values---which is great. However, since we want to use most information from this data set, it might not be easy to visualize how one attribute (in our case `pull_strength`) can be written as a function of more than two variables at the same time. Fortunately, we can still plot data in 3D (using the `scatterplot3d()` function from the `scatterplot3d` package).
+
+```{r}
+library('scatterplot3d')
+scatterplot3d(wire$wire_length, wire$height, wire$pull_strength, color = 2, pch = 19, angle = 70)
+```
+
+Also, it is useful to see how variables are correlated. To do this, we can plot (at least) two types of graphs; in this case, we will use the `scatterplotMatrix()` function from the `car` package, and the `corrplot.mixed()` function from the `corrplot` package to plot the correlation (from `cor()`) matrix.
+
+```{r}
+library('car')
+scatterplotMatrix(wire)
+```
+
+```{r}
+library('corrplot')
+corrplot.mixed(cor(wire))
+```
+
+From the second plot, we can see that `pull_strength` is highly correlated with `wire_length`, and this relation is detailed in the first plot. These graphs will be even more useful once we have more variables (as we will see in our next problem).
+
+### Fitting a model {-}
+
+Our very first task will be fitting a model with all variables so that we can try to explain how `pull_strength` relates with the other variables. We can do this in the following way.
+
+```{r}
+model <- lm(formula = pull_strength ~ ., data = wire)
+summary(model)
+```
+
+As we can see from the summary, for a significance level of $5\%$, all coefficients are different than zero. Thus, we should keep them (for our next problem, we will try to simplify the model further).
+
+Once we have the model, a next step would be performing a residual analysis. To do this, we can plot the diagnostic graphs and run the appropriate tests.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(model, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+The plot seems okay, but we still have to do the tests. As a remark, and as extracted from [this page](https://stats.stackexchange.com/questions/239157/what-does-the-residuals-vs-fitted-regression-line-express), "*the red line is a LOWESS fit to your residuals vs fitted plot. Basically, it's smoothing over the points to look for certain kinds of patterns in the residuals. For example, if you fit a linear regression on data that looked like $y = x^2$, you'd see a noticeable bowed shape*". Regarding the tests, we have the following
+
+```{r}
+ncvTest(model)
+shapiro.test(residuals(model))
+```
+
+Also, from the test results, we fail to reject the equal variance and normality assumptions, meaning that we have a good model for our data.
+
+In particular, the model is given by
+
+\begin{align*}
+\texttt{pull_strength}_i &= `r round(model$coefficients[[1]], 3)` + `r round(model$coefficients[[2]], 3)`\texttt{wire_length}_i + `r round(model$coefficients[[3]], 3)`\texttt{height}_i
+\end{align*}
+
+And we can plot the fitted model in the following way
+
+```{r}
+plot3d <- scatterplot3d(wire$wire_length, wire$height, wire$pull_strength, color = 2, pch = 19, angle = 70)
+plot3d$plane3d(model)
+```
+
+### Predicting unknown values {-}
+
+Now that we have a "good" fitted model, we can predict, the value of `pull_strength` for new values of `wire_length` and `height`. For instance, we can predict the value of `pull_strength`, such that `wire_length` is equal to 7.5 and 12.5 and `height` is equal to 150 and 450, respectively. **Notice that your new points must lie within the range for the observed data**, otherwise your model may not be appropriate for predicting extrapolated points.
+
+```{r}
+newdata <- data.frame(wire_length = c(7.5, 12.5), height = c(150, 450))
+(pred1 <- predict(object = model, newdata = newdata, interval = 'confidence'))
+(pred2 <- predict(object = model, newdata = newdata, interval = 'prediction'))
+newdata <- cbind(newdata, pull_strength = pred1[, 1])
+wire <- rbind(wire, newdata)
+plot3d <- scatterplot3d(wire$wire_length, wire$height, wire$pull_strength, color = c(rep(2, nrow(wire) - 2), 3, 3), pch = 19, angle = 70)
+plot3d$plane3d(model)
+legend('topleft', c('Observed data', 'New data'), col = c(2, 3), pch = 19)
+```
+
+From the above predicted values, notice that this time, we added the confidence interval and the prediction interval. As explained [Applied Statistics and Probability for Engineers book](https://www.wiley.com/en-us/Applied+Statistics+and+Probability+for+Engineers%2C+7th+Edition-p-9781119400363), "*the prediction interval is always wider than the confidence interval. The confidence interval expresses the error in estimating the mean of a distribution, and the prediction interval expresses the error in predicting a future observation from the distribution at the point $\mathbf{x}_0$. This must include the error in estimating the mean at that point as well as the inherent variability in the random variable `pull_strength` at the same value $\mathbf{x} = \mathbf{x}_0$*".
+
+---
+
+
+## Problem 03 {-}
+
+For this problem, we will analyse a data set with 6 variable (1 response variable + 6 covariates). Although their meaning may not be stated, we will see how important feature selection is when performing multiple regression analysis.  You can download the `.csv` file [here](./datasets/data.csv).
+
+```{r}
+col.names <- c('var1', 'var2', 'var3', 'var4', 'var5', 'var6', 'response')
+my_data <- read.csv(file = 'others/data.csv', header = FALSE, sep = ',', col.names = col.names)
+head(data, 5)
+```
+
+Explore the data set, fit an appropriate (and reduced, based on any feature selection procedure) linear model for the data, check the model assumptions, and plot the results. At the end, make predictions for unknown values.
+
+### Exploring the data set {-}
+
+Let's start with the `summary()` function.
+
+```{r}
+summary(my_data)
+```
+
+There are no missing values so that we can jump in into the exploratory analyses. However, since we want to use most information from this data set, it is not easy to visualize how `strength` can be written as a function of more than two variables at the same time. But it might be useful to see how variables are correlated. To do this, we can use the `scatterplotMatrix()` function from the `car` package, and the `corrplot.mixed()` function from the `corrplot` package.
+
+```{r}
+library('car')
+scatterplotMatrix(my_data)
+```
+
+Specially when there are too many variables or too many data points per plot, it might be difficult to analyse all the details, but from the above plot we can have a rough idea on how each variable can be written as a function of others.
+
+```{r}
+library('corrplot')
+corrplot.mixed(cor(my_data))
+```
+
+However, from the above plot we may have clearer information about the correlation between pair of variables. For instance, `var1` and `var3` are highly correlated, as well as `var5` and `var6`, `var5` and `response`, and `var6` and `response`. This information can help us having an idea on which attributes better explain the dependent variable.
+
+### Fitting a model {-}
+
+Our very first task will be fitting a model with all variables so that we can try to explain how the response variable relates to the covariates. We can do this in the following way.
+
+```{r}
+model <- lm(formula = response ~ ., data = my_data)
+summary(model)
+```
+
+From the above summary table, we may see two covariates that might not be significant, namely `var3`, `var4`, and `var6`. As we prefer simpler models over more complex models, provided they have the same performance, let's remove the one with the highest p-value first (`var4`). We can do this using the `update()` function.
+
+```{r}
+model2 <- update(model, ~ . - var4)
+summary(model2)
+```
+
+Now, let's remove `var3`.
+
+```{r}
+model3 <- update(model2, ~ . - var3)
+summary(model3)
+```
+
+Although `var6` has a p-value of `0.0276` and we already know that it is highly correlated with `var5`, let's keep it for now. However, in order to have sufficiently simpler models, we can also compute and analyse the Variance Inflation Factor (VIF), which is a **measure of the amount of multicollinearity in a set of multiple regression variables**. According to [this page](https://www.investopedia.com/terms/v/variance-inflation-factor.asp) *the VIF for a regression model variable is equal to the ratio of the overall model variance to the variance of a model that includes only that single independent variable. This ratio is calculated for each independent variable. A high VIF indicates that the associated independent variable is highly collinear with the other variables in the model*. Also, as a rule of thumb, we can exclude variables with VIF greater than 2, provided we do this for one variable at a time. To do this, we can use the `vif()` function from the `car` package.
+
+```{r}
+vif(model3)
+```
+
+As we expected, `var6` can be excluded from our model.
+
+```{r}
+model4 <- update(model3, ~ . - var6)
+vif(model4)
+summary(model4)
+```
+
+Next, we still have to do a residual analysis. For doing this, we will do the "Residuals vs Fitted" and "Normal Q-Q" plots and run the appropriate tests, as before.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(model4, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+From the plots, the assumptions of equal variance and normality for the residuals seem to hold. However, as fewer data points make the visual analysis difficult, it is also important to run the tests, namely, `ncvTest()` and `shapiro.test()` for the residuals (`residuals()`).
+
+```{r}
+ncvTest(model4)
+shapiro.test(residuals(model4))
+```
+
+From the tests results, we fail to reject the null hypotheses---meaning that there is no evidence from the data that the assumptions of equal variance and normality for the residuals do not hold.
+
+Our final model is
+
+\begin{align*}
+\texttt{response}_i &= `r round(model4$coefficients[[1]], 3)` + `r round(model4$coefficients[[2]], 3)`\texttt{var1}_i + `r round(model4$coefficients[[3]], 3)`\texttt{var2}_i + `r round(model4$coefficients[[4]], 3)`\texttt{var5}_i
+\end{align*}
+
+### Predicting unknown values {-}
+
+Now that we have a "good" fitted model, we can predict the value of `response` for new values of `var1`, `var2`, and `var5`. For instance, we can predict the value of `response`, such that `var1`, `var2` and `var5` are equal to 55, 100, and 70, respectively. We can also include a confidence and a prediction interval.
+
+```{r}
+newdata <- data.frame(var1 = 55, var2 = 100, var5 = 70)
+(pred1 <- predict(object = model4, newdata = newdata, interval = 'confidence'))
+(pred2 <- predict(object = model4, newdata = newdata, interval = 'prediction'))
+```

@@ -9,6 +9,10 @@ navbar:
       href: tutorial01.html
     - text: 'Tutorial 02'
       href: tutorial02.html
+    - text: 'Tutorial 03'
+      href: tutorial03.html
+    - text: 'Tutorial 04'
+      href: tutorial04.html
   right:
     - icon: fa-globe
       href: https://avramaral.github.io/

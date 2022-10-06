@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="André Victor Ribeiro Amaral" />
+
+
+<title>Tutorial 04</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STAT 215</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tutorial01.html">Tutorial 01</a>
+</li>
+<li>
+  <a href="tutorial02.html">Tutorial 02</a>
+</li>
+<li>
+  <a href="tutorial03.html">Tutorial 03</a>
+</li>
+<li>
+  <a href="tutorial04.html">Tutorial 04</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://avramaral.github.io/">
+    <span class="fa fa-globe"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial 04</h1>
+<h4 class="author">André Victor Ribeiro Amaral</h4>
+
+</div>
+
+
+<div id="introduction" class="section level2 unnumbered">
+<h2 class="unnumbered">Introduction</h2>
+<p>For this tutorial session, we will analyze three (linear regression) problems from top to bottom.</p>
+</div>
+<div id="problem-01" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 01</h2>
+<p>For this problem, we will analyse data about the mileage per gallon performances of various cars. The data set was retrieved from <a href="https://archive.ics.uci.edu/ml/datasets/Auto+MPG">this page</a> (with changes). You can download the <code>.csv</code> file <a href="./others/car.csv">here</a>.</p>
+<pre class="r"><code>col.names &lt;- c(&#39;mpg&#39;, &#39;cylinders&#39;, &#39;displacement&#39;, &#39;hp&#39;, &#39;weight&#39;, &#39;acceleration&#39;, &#39;year&#39;, &#39;origin&#39;)
+car &lt;- read.csv(file = &#39;others/car.csv&#39;, header = FALSE, sep = &#39;,&#39;, col.names = col.names)
+head(car, 5)</code></pre>
+<pre><code>##   mpg cylinders displacement  hp weight acceleration year origin
+## 1  18         8          307 130   3504         12.0   70      1
+## 2  16         8          304 150   3433         12.0   70      1
+## 3  17         8          302 140   3449         10.5   70      1
+## 4  NA         8          350 165   4142         11.5   70      1
+## 5  NA         8          351 153   4034         11.0   70      1</code></pre>
+<p>Explore the data set, fit an appropriate linear model, check the model assumptions, and plot the results. At the end, make predictions for unknown values.</p>
+<div id="exploring-the-data-set" class="section level3 unnumbered">
+<h3 class="unnumbered">Exploring the data set</h3>
+<p>Let’s start with the <code>summary()</code> function.</p>
+<pre class="r"><code>summary(car)</code></pre>
+<pre><code>##       mpg          cylinders      displacement         hp            weight    
+##  Min.   :12.00   Min.   :3.000   Min.   : 68.0   Min.   : 48.0   Min.   :1613  
+##  1st Qu.:18.00   1st Qu.:4.000   1st Qu.:107.0   1st Qu.: 77.5   1st Qu.:2237  
+##  Median :23.00   Median :4.000   Median :148.5   Median : 92.0   Median :2804  
+##  Mean   :23.74   Mean   :5.372   Mean   :187.9   Mean   :100.9   Mean   :2936  
+##  3rd Qu.:29.80   3rd Qu.:6.000   3rd Qu.:250.0   3rd Qu.:113.5   3rd Qu.:3456  
+##  Max.   :39.00   Max.   :8.000   Max.   :400.0   Max.   :190.0   Max.   :4746  
+##  NA&#39;s   :6                                       NA&#39;s   :2                     
+##   acceleration        year           origin     
+##  Min.   : 8.00   Min.   :70.00   Min.   :1.000  
+##  1st Qu.:14.00   1st Qu.:73.00   1st Qu.:1.000  
+##  Median :15.50   Median :76.00   Median :1.000  
+##  Mean   :15.58   Mean   :76.36   Mean   :1.558  
+##  3rd Qu.:17.00   3rd Qu.:79.75   3rd Qu.:2.000  
+##  Max.   :23.50   Max.   :82.00   Max.   :3.000  
+## </code></pre>
+<p>As one can see from the above table, some multi-valued discrete attributes are being interpreted as integer values; also, we have <code>NA</code>’s for the <code>mpg</code> and <code>horsepower</code> attributes. To verify (and change) the variable types, we can do the following</p>
+<pre class="r"><code>car$cylinders &lt;- as.factor(car$cylinders)
+car$year      &lt;- as.factor(car$year)
+car$origin    &lt;- as.factor(car$origin)</code></pre>
+<p>Also, as there are too many classes for the <code>year</code>, and as a way to make our analyses simpler, let’s categorize the cars into <code>old</code> and <code>new</code>, such that cars from before <code>77</code> will be labeled as <code>1</code> and the remaining cars will be labeled as <code>2</code>.</p>
+<pre class="r"><code>car$year &lt;- as.factor(sapply(X = car$year, FUN = function (item) { ifelse(item %in% 70:76, 1, 2) }))
+summary(car)</code></pre>
+<pre><code>##       mpg        cylinders  displacement         hp            weight    
+##  Min.   :12.00   3:  3     Min.   : 68.0   Min.   : 48.0   Min.   :1613  
+##  1st Qu.:18.00   4:134     1st Qu.:107.0   1st Qu.: 77.5   1st Qu.:2237  
+##  Median :23.00   5:  1     Median :148.5   Median : 92.0   Median :2804  
+##  Mean   :23.74   6: 62     Mean   :187.9   Mean   :100.9   Mean   :2936  
+##  3rd Qu.:29.80   8: 58     3rd Qu.:250.0   3rd Qu.:113.5   3rd Qu.:3456  
+##  Max.   :39.00             Max.   :400.0   Max.   :190.0   Max.   :4746  
+##  NA&#39;s   :6                                 NA&#39;s   :2                     
+##   acceleration   year    origin 
+##  Min.   : 8.00   1:132   1:167  
+##  1st Qu.:14.00   2:126   2: 38  
+##  Median :15.50           3: 53  
+##  Mean   :15.58                  
+##  3rd Qu.:17.00                  
+##  Max.   :23.50                  
+## </code></pre>
+<p>Now, let’s deal with the missing values. Different approaches could have been taken here, and they highly depend on your problem (and your knowledge about the problem). For this particular example, suppose that we want to describe the <code>mpg</code> data as a function of the <code>hp</code> and <code>year</code>. Since we do not now much about this data, a simpler options would be to exclude the instances with missing values for the <code>hp</code>. Let’s do this.</p>
+<pre class="r"><code>car2 &lt;- car[!is.na(car$hp), c(&#39;mpg&#39;, &#39;hp&#39;, &#39;year&#39;)]
+summary(car2)</code></pre>
+<pre><code>##       mpg              hp        year   
+##  Min.   :12.00   Min.   : 48.0   1:131  
+##  1st Qu.:18.00   1st Qu.: 77.5   2:125  
+##  Median :23.00   Median : 92.0          
+##  Mean   :23.75   Mean   :100.9          
+##  3rd Qu.:29.80   3rd Qu.:113.5          
+##  Max.   :39.00   Max.   :190.0          
+##  NA&#39;s   :6</code></pre>
+<p>Given this smaller data set, our goal might be to predict the missing values for <code>mpg</code>. However, to do this, we have to have a data set with no <code>NA</code>’s. Let’s name it <code>car3</code>.</p>
+<pre class="r"><code>car3 &lt;- car2[!is.na(car2$mpg), ]</code></pre>
+<p>As a last exploration step, let’s plot our data set.</p>
+<pre class="r"><code>plot(mpg ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+legend(&#39;topright&#39;, c(&#39;old&#39;, &#39;new&#39;), col = unique(as.numeric(car3$year) + 1), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="fitting-a-model" class="section level3 unnumbered">
+<h3 class="unnumbered">Fitting a model</h3>
+<p>From the previous plot, although we suspect that a linear model might not be appropriate for this data set as it is, let’s fit it and analyse the results.</p>
+<p>In particular, we will fit the following model</p>
+<p><span class="math display">\[
+\texttt{mpg}_i = \beta_0 + \texttt{hp}_i \cdot \beta_1 + \epsilon_i; \text{ such that } \epsilon_i \overset{\text{i.i.d.}}{\sim} \text{Normal}(0, \sigma^2_{\epsilon})
+\]</span></p>
+<pre class="r"><code>model &lt;- lm(formula = mpg ~ hp, data = car3)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ hp, data = car3)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -9.3908 -3.3377 -0.0706  2.7713 11.7533 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 42.543005   0.941244   45.20   &lt;2e-16 ***
+## hp          -0.188003   0.009001  -20.89   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.362 on 248 degrees of freedom
+## Multiple R-squared:  0.6376, Adjusted R-squared:  0.6361 
+## F-statistic: 436.2 on 1 and 248 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>From the above summary, we have strong evidences that both <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> are different than 0. The residuals do not seem symmetric, though. Also, <span class="math inline">\(\text{R}^2 =\)</span> 0.6375558. Now, let’s plot the fitted model.</p>
+<pre class="r"><code>plot(mpg ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+abline(model)
+legend(&#39;topright&#39;, c(&#39;old&#39;, &#39;new&#39;), col = unique(as.numeric(car3$year) + 1), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>However, notice that the relation between <code>hp</code> and <code>mpg</code> does not seem to be linear, and the <code>age</code> might also provide information when describe the response variable. Thus, before taking any conclusions from the fitted model, let’s do an analysis of residuals. We will focus on the “Residuals vs Fitted” and “Normal Q-Q” plots.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(model, which = c(1, 2))</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<p>From the “Residuals vs Fitted” plots, we may see that a linear relationship does not correctly describe how <code>mpg</code> is written as a function of <code>hp</code>, since we can see a pattern for the residuals (as opposed to a “well spread and random” cloud of points around <span class="math inline">\(y = 0\)</span>). Also, from the “Normal Q-Q” plot, the residuals seem to be normally distributed (we will test it).</p>
+<p>To confirm these visual analyses, let’s conduct a proper test. To check for the assumption of equal variance, since we have a quantitative regressor, we can use the Score Test, available in the <code>car</code> package through the <code>ncvTest()</code> function. Also, to check for the normality of the residuals, we will use the Shapiro-Wilk test (<code>shapiro.test()</code>).</p>
+<pre class="r"><code>library(&#39;car&#39;)</code></pre>
+<pre><code>## Loading required package: carData</code></pre>
+<pre><code>## 
+## Attaching package: &#39;car&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     recode</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     some</code></pre>
+<pre class="r"><code>ncvTest(model)</code></pre>
+<pre><code>## Non-constant Variance Score Test 
+## Variance formula: ~ fitted.values 
+## Chisquare = 6.945645, Df = 1, p = 0.0084024</code></pre>
+<pre class="r"><code>shapiro.test(residuals(model))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(model)
+## W = 0.98926, p-value = 0.06041</code></pre>
+<p>As the p-values are too small for the first test, we have strong evidences against equal variance. On the other hand, we fail to reject the hypothesis of normally distributed residuals (with a significance level of <span class="math inline">\(5\%\)</span>). Thus, as at least one assumption for this model does not hold, the results might not be reliable.</p>
+<p>As a way to overcome this issue, we will transform the data according to the following rule</p>
+<p><span class="math display">\[ 
+w(\lambda) = 
+\begin{cases}
+  (y^{\lambda} - 1)/\lambda &amp;, \text{ if } \lambda \neq 0 \\
+  \log(y) &amp;, \text{ if } \lambda = 0.
+\end{cases}
+\]</span></p>
+<p>This can be achieved by using the <code>boxCox()</code> function from the <code>car</code> package. Based on it, we will retrieve the value of <code>lambda</code> and will apply the above transformation.</p>
+<pre class="r"><code>bc &lt;- boxCox(model)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>(lambda &lt;- bc$x[which.max(bc$y)])</code></pre>
+<pre><code>## [1] -0.5454545</code></pre>
+<p>Now, let’s create a function to transform our data based on the value of <span class="math inline">\(\lambda\)</span> and based on the above rule. We will name it <code>tranfData()</code>. Also, we will create a function to transform our data back to the original scale. We will name it <code>tranfData_back()</code>. This second function, if <span class="math inline">\(\lambda \neq 0\)</span>, will be given by <span class="math inline">\(y(\lambda) = (w\lambda + 1)^{1/\lambda}\)</span>.</p>
+<pre class="r"><code>transfData &lt;- function (data, lambda) { ((data ^ lambda - 1) / lambda) }
+transfData_back &lt;- function (data, lambda) { ((data * lambda + 1) ^ (1 / lambda)) }</code></pre>
+<p>Therefore, we can easily transform our data, given <span class="math inline">\(\lambda =\)</span> -0.55, in the following way</p>
+<pre class="r"><code>car3$mpg_transf &lt;- sapply(X = car3$mpg, FUN = transfData, lambda = lambda)
+head(car3, 5)</code></pre>
+<pre><code>##   mpg  hp year mpg_transf
+## 1  18 130    1   1.454413
+## 2  16 150    1   1.429271
+## 3  17 140    1   1.442414
+## 8  14 160    1   1.398742
+## 9  24  95    1   1.509442</code></pre>
+<pre class="r"><code>plot(mpg_transf ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+legend(&#39;topright&#39;, c(&#39;old&#39;, &#39;new&#39;), col = unique(as.numeric(car3$year) + 1), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Finally, we can fit again a linear model for the transformed data.</p>
+<pre class="r"><code>model2 &lt;- lm(formula = mpg_transf ~ hp, data = car3)
+summary(model2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg_transf ~ hp, data = car3)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.079235 -0.021397  0.001967  0.020464  0.074192 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.656e+00  6.607e-03  250.69   &lt;2e-16 ***
+## hp          -1.622e-03  6.318e-05  -25.68   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.03062 on 248 degrees of freedom
+## Multiple R-squared:  0.7267, Adjusted R-squared:  0.7256 
+## F-statistic: 659.3 on 1 and 248 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>plot(mpg_transf ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+abline(model2)
+legend(&#39;topright&#39;, c(&#39;old&#39;, &#39;new&#39;), col = unique(as.numeric(car3$year) + 1), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Also, we can analyse the diagnostic plots, as before. As well as conduct the appropriate tests.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(model2, which = c(1, 2))</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))
+
+ncvTest(model2)</code></pre>
+<pre><code>## Non-constant Variance Score Test 
+## Variance formula: ~ fitted.values 
+## Chisquare = 1.087962, Df = 1, p = 0.29692</code></pre>
+<pre class="r"><code>shapiro.test(residuals(model2))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(model2)
+## W = 0.98934, p-value = 0.06252</code></pre>
+<p>As we would expect, the results look much better now. However, we can still use information about <code>year</code>, which seems to play a role in explaining the response variable. That being said, let’s fit this new model.</p>
+<p>Notice that we will consider a model with interaction (<em>an interaction occurs when an independent variable has a different effect on the outcome depending on the values of another independent variable</em>). For an extensive discussion on this topic, one can refer to <a href="https://www.medicine.mcgill.ca/epidemiology/joseph/courses/EPIB-621/interaction.pdf">this link</a>.</p>
+<pre class="r"><code>model3 &lt;- lm(formula = mpg_transf ~ hp * year, data = car3)
+summary(model3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg_transf ~ hp * year, data = car3)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.061671 -0.017084  0.001801  0.018128  0.065467 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.620e+00  7.767e-03 208.563  &lt; 2e-16 ***
+## hp          -1.435e-03  6.886e-05 -20.836  &lt; 2e-16 ***
+## year2        4.570e-02  1.159e-02   3.945 0.000104 ***
+## hp:year2    -1.118e-04  1.133e-04  -0.986 0.325015    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.02561 on 246 degrees of freedom
+## Multiple R-squared:  0.8103, Adjusted R-squared:  0.808 
+## F-statistic: 350.3 on 3 and 246 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>From the above table, we can see that the interaction (<code>hp:year2</code>) is not significant; therefore, we can fit a simpler model.</p>
+<pre class="r"><code>model4 &lt;- lm(formula = mpg_transf ~ hp + year, data = car3)
+coeffi &lt;- model4$coefficients
+summary(model4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg_transf ~ hp + year, data = car3)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.061994 -0.017143  0.001694  0.017929  0.065681 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.624e+00  6.323e-03  256.91   &lt;2e-16 ***
+## hp          -1.476e-03  5.469e-05  -26.99   &lt;2e-16 ***
+## year2        3.477e-02  3.353e-03   10.37   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.02561 on 247 degrees of freedom
+## Multiple R-squared:  0.8096, Adjusted R-squared:  0.808 
+## F-statistic:   525 on 2 and 247 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>plot(mpg_transf ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+abline(coeffi[[1]], coeffi[[2]], col = 2)
+abline(coeffi[[1]] + coeffi[[3]], coeffi[[2]], col = 3)
+legend(&#39;topright&#39;, c(&#39;old&#39;, &#39;new&#39;), col = unique(as.numeric(car3$year) + 1), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Again, we can analyse the diagnostic plots and conduct the appropriate tests.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(model4, which = c(1, 2))</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))
+
+ncvTest(model4)</code></pre>
+<pre><code>## Non-constant Variance Score Test 
+## Variance formula: ~ fitted.values 
+## Chisquare = 2.838162, Df = 1, p = 0.092049</code></pre>
+<pre class="r"><code>shapiro.test(residuals(model4))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(model4)
+## W = 0.99006, p-value = 0.08516</code></pre>
+<p>Thus, for a significance level of <span class="math inline">\(5\%\)</span> we fail to reject the hypotheses of equal variance and normality. Meaning that this might be an appropriate model for our data. However, recall that we are modelling a transformed data set. We can get a model for our original data by doing the following. For a transformation <span class="math inline">\(f\)</span>, we have the</p>
+<p><span class="math display">\[\begin{align*}
+\texttt{mpg}_i &amp;= f^{-1}(1.624 -0.001\texttt{hp}_i)&amp;, \text{ if } \texttt{year} = 1 \\
+\texttt{mpg}_i &amp;= f^{-1}((1.624 + 0.035) -0.001\texttt{hp}_i)&amp;, \text{ if } \texttt{year} = 2
+\end{align*}\]</span></p>
+<p>And we can plot it in the following way</p>
+<pre class="r"><code>plot(mpg ~ hp, pch = 19, col = (as.numeric(year) + 1), data = car3)
+curve(transfData_back(coeffi[[1]] + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 2)
+curve(transfData_back((coeffi[[1]] + coeffi[[3]]) + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 3)
+legend(&#39;topright&#39;, c(&#39;old&#39;, &#39;new&#39;), col = unique(as.numeric(car3$year) + 1), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="predicting-unknown-values" class="section level3 unnumbered">
+<h3 class="unnumbered">Predicting unknown values</h3>
+<p>Now that we have a “good” fitted model, we can predict, as suggested before, the values of <code>mpg</code> for which we had <code>NA</code>’s before. We can do this in the following way</p>
+<pre class="r"><code>pos_unk &lt;- which(is.na(car2$mpg))
+unknown &lt;- car2[is.na(car2$mpg), ]
+(predicted_values &lt;- sapply(X = predict(object = model4, newdata = data.frame(hp = unknown$hp, year = unknown$year)), FUN = transfData_back, lambda = lambda))</code></pre>
+<pre><code>##        1        2        3        4        5        6 
+## 13.00153 13.98905 12.25847 12.25847 31.38660 22.37227</code></pre>
+<pre class="r"><code>car2[is.na(car2$mpg), &#39;mpg&#39;] &lt;- predicted_values
+pch &lt;- rep(19, nrow(car2)); pch[pos_unk] &lt;- 9
+plot(mpg ~ hp, pch = pch, col = (as.numeric(year) + 1), data = car2)
+curve(transfData_back(coeffi[[1]] + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 2)
+curve(transfData_back((coeffi[[1]] + coeffi[[3]]) + coeffi[[2]] * x, lambda = lambda), from = 0, to = 250, add = TRUE, col = 3)
+legend(&#39;topright&#39;, c(&#39;old&#39;, &#39;new&#39;), col = unique(as.numeric(car3$year) + 1), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<hr />
+</div>
+</div>
+<div id="problem-02" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 02</h2>
+<p>For this problem, we will analyse data collected in an observational study in a semiconductor manufacturing plant. Data were retrieved from the <a href="https://www.wiley.com/en-us/Applied+Statistics+and+Probability+for+Engineers%2C+7th+Edition-p-9781119400363"><strong>Applied Statistics and Probability for Engineers</strong> book</a>. You can download the <code>.csv</code> file <a href="./others/wire_bond.csv">here</a>. In this plant, the finished semiconductor is wire-bonded to a frame. The variables reported are pull strength (a measure of the amount of force required to break the bond), the wire length, and the height of the die.</p>
+<pre class="r"><code>col.names &lt;- c(&#39;pull_strength&#39;, &#39;wire_length&#39;, &#39;height&#39;)
+wire &lt;- read.csv(file = &#39;others/wire_bond.csv&#39;, header = FALSE, sep = &#39;,&#39;, col.names = col.names)
+head(wire, 5)</code></pre>
+<pre><code>##   pull_strength wire_length height
+## 1          9.95           2     50
+## 2         24.45           8    110
+## 3         31.75          11    120
+## 4         35.00          10    550
+## 5         25.02           8    295</code></pre>
+<p>Explore the data set, fit an appropriate linear model for the data, check the model assumptions, and plot the fitted plan. At the end, make predictions for unknown values.</p>
+<div id="exploring-the-data-set-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Exploring the data set</h3>
+<p>Let’s start with the <code>summary()</code> function.</p>
+<pre class="r"><code>summary(wire)</code></pre>
+<pre><code>##  pull_strength    wire_length        height     
+##  Min.   : 9.60   Min.   : 1.00   Min.   : 50.0  
+##  1st Qu.:17.08   1st Qu.: 4.00   1st Qu.:200.0  
+##  Median :24.45   Median : 8.00   Median :360.0  
+##  Mean   :29.03   Mean   : 8.24   Mean   :331.8  
+##  3rd Qu.:37.00   3rd Qu.:11.00   3rd Qu.:500.0  
+##  Max.   :69.00   Max.   :20.00   Max.   :600.0</code></pre>
+<p>In this case, there are no missing values—which is great. However, since we want to use most information from this data set, it might not be easy to visualize how one attribute (in our case <code>pull_strength</code>) can be written as a function of more than two variables at the same time. Fortunately, we can still plot data in 3D (using the <code>scatterplot3d()</code> function from the <code>scatterplot3d</code> package).</p>
+<pre class="r"><code>library(&#39;scatterplot3d&#39;)
+scatterplot3d(wire$wire_length, wire$height, wire$pull_strength, color = 2, pch = 19, angle = 70)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>Also, it is useful to see how variables are correlated. To do this, we can plot (at least) two types of graphs; in this case, we will use the <code>scatterplotMatrix()</code> function from the <code>car</code> package, and the <code>corrplot.mixed()</code> function from the <code>corrplot</code> package to plot the correlation (from <code>cor()</code>) matrix.</p>
+<pre class="r"><code>library(&#39;car&#39;)
+scatterplotMatrix(wire)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>library(&#39;corrplot&#39;)</code></pre>
+<pre><code>## corrplot 0.92 loaded</code></pre>
+<pre class="r"><code>corrplot.mixed(cor(wire))</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>From the second plot, we can see that <code>pull_strength</code> is highly correlated with <code>wire_length</code>, and this relation is detailed in the first plot. These graphs will be even more useful once we have more variables (as we will see in our next problem).</p>
+</div>
+<div id="fitting-a-model-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Fitting a model</h3>
+<p>Our very first task will be fitting a model with all variables so that we can try to explain how <code>pull_strength</code> relates with the other variables. We can do this in the following way.</p>
+<pre class="r"><code>model &lt;- lm(formula = pull_strength ~ ., data = wire)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = pull_strength ~ ., data = wire)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -3.865 -1.542 -0.362  1.196  5.841 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2.263791   1.060066   2.136 0.044099 *  
+## wire_length 2.744270   0.093524  29.343  &lt; 2e-16 ***
+## height      0.012528   0.002798   4.477 0.000188 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.288 on 22 degrees of freedom
+## Multiple R-squared:  0.9811, Adjusted R-squared:  0.9794 
+## F-statistic: 572.2 on 2 and 22 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>As we can see from the summary, for a significance level of <span class="math inline">\(5\%\)</span>, all coefficients are different than zero. Thus, we should keep them (for our next problem, we will try to simplify the model further).</p>
+<p>Once we have the model, a next step would be performing a residual analysis. To do this, we can plot the diagnostic graphs and run the appropriate tests.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(model, which = c(1, 2))</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<p>The plot seems okay, but we still have to do the tests. As a remark, and as extracted from <a href="https://stats.stackexchange.com/questions/239157/what-does-the-residuals-vs-fitted-regression-line-express">this page</a>, “<em>the red line is a LOWESS fit to your residuals vs fitted plot. Basically, it’s smoothing over the points to look for certain kinds of patterns in the residuals. For example, if you fit a linear regression on data that looked like <span class="math inline">\(y = x^2\)</span>, you’d see a noticeable bowed shape</em>”. Regarding the tests, we have the following</p>
+<pre class="r"><code>ncvTest(model)</code></pre>
+<pre><code>## Non-constant Variance Score Test 
+## Variance formula: ~ fitted.values 
+## Chisquare = 0.04524206, Df = 1, p = 0.83156</code></pre>
+<pre class="r"><code>shapiro.test(residuals(model))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(model)
+## W = 0.95827, p-value = 0.381</code></pre>
+<p>Also, from the test results, we fail to reject the equal variance and normality assumptions, meaning that we have a good model for our data.</p>
+<p>In particular, the model is given by</p>
+<p><span class="math display">\[\begin{align*}
+\texttt{pull_strength}_i &amp;= 2.264 + 2.744\texttt{wire_length}_i + 0.013\texttt{height}_i
+\end{align*}\]</span></p>
+<p>And we can plot the fitted model in the following way</p>
+<pre class="r"><code>plot3d &lt;- scatterplot3d(wire$wire_length, wire$height, wire$pull_strength, color = 2, pch = 19, angle = 70)
+plot3d$plane3d(model)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+</div>
+<div id="predicting-unknown-values-1" class="section level3 unnumbered">
+<h3 class="unnumbered">Predicting unknown values</h3>
+<p>Now that we have a “good” fitted model, we can predict, the value of <code>pull_strength</code> for new values of <code>wire_length</code> and <code>height</code>. For instance, we can predict the value of <code>pull_strength</code>, such that <code>wire_length</code> is equal to 7.5 and 12.5 and <code>height</code> is equal to 150 and 450, respectively. <strong>Notice that your new points must lie within the range for the observed data</strong>, otherwise your model may not be appropriate for predicting extrapolated points.</p>
+<pre class="r"><code>newdata &lt;- data.frame(wire_length = c(7.5, 12.5), height = c(150, 450))
+(pred1 &lt;- predict(object = model, newdata = newdata, interval = &#39;confidence&#39;))</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 24.72499 23.33957 26.11040
+## 2 42.20468 40.92987 43.47948</code></pre>
+<pre class="r"><code>(pred2 &lt;- predict(object = model, newdata = newdata, interval = &#39;prediction&#39;))</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 24.72499 19.78175 29.66822
+## 2 42.20468 37.29130 47.11805</code></pre>
+<pre class="r"><code>newdata &lt;- cbind(newdata, pull_strength = pred1[, 1])
+wire &lt;- rbind(wire, newdata)
+plot3d &lt;- scatterplot3d(wire$wire_length, wire$height, wire$pull_strength, color = c(rep(2, nrow(wire) - 2), 3, 3), pch = 19, angle = 70)
+plot3d$plane3d(model)
+legend(&#39;topleft&#39;, c(&#39;Observed data&#39;, &#39;New data&#39;), col = c(2, 3), pch = 19)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>From the above predicted values, notice that this time, we added the confidence interval and the prediction interval. As explained <a href="https://www.wiley.com/en-us/Applied+Statistics+and+Probability+for+Engineers%2C+7th+Edition-p-9781119400363">Applied Statistics and Probability for Engineers book</a>, “<em>the prediction interval is always wider than the confidence interval. The confidence interval expresses the error in estimating the mean of a distribution, and the prediction interval expresses the error in predicting a future observation from the distribution at the point <span class="math inline">\(\mathbf{x}_0\)</span>. This must include the error in estimating the mean at that point as well as the inherent variability in the random variable <code>pull_strength</code> at the same value <span class="math inline">\(\mathbf{x} = \mathbf{x}_0\)</span></em>”.</p>
+<hr />
+</div>
+</div>
+<div id="problem-03" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 03</h2>
+<p>For this problem, we will analyse a data set with 6 variable (1 response variable + 6 covariates). Although their meaning may not be stated, we will see how important feature selection is when performing multiple regression analysis. You can download the <code>.csv</code> file <a href="./datasets/data.csv">here</a>.</p>
+<pre class="r"><code>col.names &lt;- c(&#39;var1&#39;, &#39;var2&#39;, &#39;var3&#39;, &#39;var4&#39;, &#39;var5&#39;, &#39;var6&#39;, &#39;response&#39;)
+my_data &lt;- read.csv(file = &#39;others/data.csv&#39;, header = FALSE, sep = &#39;,&#39;, col.names = col.names)
+head(data, 5)</code></pre>
+<pre><code>##   heights ages
+## 1  168.68   14
+## 2  169.19   15
+## 3  173.83   16
+## 4  176.61   18
+## 5  163.79   12</code></pre>
+<p>Explore the data set, fit an appropriate (and reduced, based on any feature selection procedure) linear model for the data, check the model assumptions, and plot the results. At the end, make predictions for unknown values.</p>
+<div id="exploring-the-data-set-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Exploring the data set</h3>
+<p>Let’s start with the <code>summary()</code> function.</p>
+<pre class="r"><code>summary(my_data)</code></pre>
+<pre><code>##       var1            var2             var3            var4          
+##  Min.   :50.94   Min.   : 92.32   Min.   :44.06   Min.   :0.0001482  
+##  1st Qu.:56.45   1st Qu.: 95.77   1st Qu.:47.24   1st Qu.:0.0045800  
+##  Median :64.21   Median : 98.57   Median :49.63   Median :0.0131564  
+##  Mean   :63.96   Mean   : 99.73   Mean   :49.29   Mean   :0.0163943  
+##  3rd Qu.:68.94   3rd Qu.:103.94   3rd Qu.:51.37   3rd Qu.:0.0249283  
+##  Max.   :79.30   Max.   :107.66   Max.   :54.52   Max.   :0.0426500  
+##       var5            var6          response    
+##  Min.   :1.801   Min.   :63.08   Min.   :210.5  
+##  1st Qu.:2.486   1st Qu.:69.98   1st Qu.:232.2  
+##  Median :5.038   Median :74.97   Median :250.9  
+##  Mean   :4.709   Mean   :75.77   Mean   :252.8  
+##  3rd Qu.:6.493   3rd Qu.:81.05   3rd Qu.:270.3  
+##  Max.   :9.055   Max.   :90.00   Max.   :298.0</code></pre>
+<p>There are no missing values so that we can jump in into the exploratory analyses. However, since we want to use most information from this data set, it is not easy to visualize how <code>strength</code> can be written as a function of more than two variables at the same time. But it might be useful to see how variables are correlated. To do this, we can use the <code>scatterplotMatrix()</code> function from the <code>car</code> package, and the <code>corrplot.mixed()</code> function from the <code>corrplot</code> package.</p>
+<pre class="r"><code>library(&#39;car&#39;)
+scatterplotMatrix(my_data)</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>Specially when there are too many variables or too many data points per plot, it might be difficult to analyse all the details, but from the above plot we can have a rough idea on how each variable can be written as a function of others.</p>
+<pre class="r"><code>library(&#39;corrplot&#39;)
+corrplot.mixed(cor(my_data))</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>However, from the above plot we may have clearer information about the correlation between pair of variables. For instance, <code>var1</code> and <code>var3</code> are highly correlated, as well as <code>var5</code> and <code>var6</code>, <code>var5</code> and <code>response</code>, and <code>var6</code> and <code>response</code>. This information can help us having an idea on which attributes better explain the dependent variable.</p>
+</div>
+<div id="fitting-a-model-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Fitting a model</h3>
+<p>Our very first task will be fitting a model with all variables so that we can try to explain how the response variable relates to the covariates. We can do this in the following way.</p>
+<pre class="r"><code>model &lt;- lm(formula = response ~ ., data = my_data)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = response ~ ., data = my_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.29614 -0.41203 -0.05714  0.32644  1.68448 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.01567    4.31348  -0.004   0.9971    
+## var1         0.16437    0.05915   2.779   0.0129 *  
+## var2         1.65363    0.25551   6.472 5.74e-06 ***
+## var3        -0.24772    0.15677  -1.580   0.1325    
+## var4        15.25598   13.40879   1.138   0.2710    
+## var5         7.85702    1.19346   6.583 4.65e-06 ***
+## var6         0.69112    0.38603   1.790   0.0912 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8177 on 17 degrees of freedom
+## Multiple R-squared:  0.9992, Adjusted R-squared:  0.9989 
+## F-statistic:  3540 on 6 and 17 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>From the above summary table, we may see two covariates that might not be significant, namely <code>var3</code>, <code>var4</code>, and <code>var6</code>. As we prefer simpler models over more complex models, provided they have the same performance, let’s remove the one with the highest p-value first (<code>var4</code>). We can do this using the <code>update()</code> function.</p>
+<pre class="r"><code>model2 &lt;- update(model, ~ . - var4)
+summary(model2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = response ~ var1 + var2 + var3 + var5 + var6, data = my_data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.56817 -0.37178 -0.02967  0.30375  1.88355 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.23242    4.34438  -0.053   0.9579    
+## var1         0.15298    0.05877   2.603   0.0180 *  
+## var2         1.57953    0.24908   6.341 5.64e-06 ***
+## var3        -0.22602    0.15687  -1.441   0.1668    
+## var5         7.46733    1.15258   6.479 4.29e-06 ***
+## var6         0.81454    0.37349   2.181   0.0427 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8244 on 18 degrees of freedom
+## Multiple R-squared:  0.9991, Adjusted R-squared:  0.9989 
+## F-statistic:  4179 on 5 and 18 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Now, let’s remove <code>var3</code>.</p>
+<pre class="r"><code>model3 &lt;- update(model2, ~ . - var3)
+summary(model3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = response ~ var1 + var2 + var5 + var6, data = my_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.6041 -0.4214 -0.0859  0.4792  1.5974 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.78392    4.44833  -0.176   0.8620    
+## var1         0.07899    0.02937   2.690   0.0145 *  
+## var2         1.46614    0.24293   6.035 8.33e-06 ***
+## var5         7.19347    1.16854   6.156 6.46e-06 ***
+## var6         0.90352    0.37864   2.386   0.0276 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.8474 on 19 degrees of freedom
+## Multiple R-squared:  0.999,  Adjusted R-squared:  0.9988 
+## F-statistic:  4944 on 4 and 19 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Although <code>var6</code> has a p-value of <code>0.0276</code> and we already know that it is highly correlated with <code>var5</code>, let’s keep it for now. However, in order to have sufficiently simpler models, we can also compute and analyse the Variance Inflation Factor (VIF), which is a <strong>measure of the amount of multicollinearity in a set of multiple regression variables</strong>. According to <a href="https://www.investopedia.com/terms/v/variance-inflation-factor.asp">this page</a> <em>the VIF for a regression model variable is equal to the ratio of the overall model variance to the variance of a model that includes only that single independent variable. This ratio is calculated for each independent variable. A high VIF indicates that the associated independent variable is highly collinear with the other variables in the model</em>. Also, as a rule of thumb, we can exclude variables with VIF greater than 2, provided we do this for one variable at a time. To do this, we can use the <code>vif()</code> function from the <code>car</code> package.</p>
+<pre class="r"><code>vif(model3)</code></pre>
+<pre><code>##       var1       var2       var5       var6 
+##   1.740913  44.823922 211.048276 271.824355</code></pre>
+<p>As we expected, <code>var6</code> can be excluded from our model.</p>
+<pre class="r"><code>model4 &lt;- update(model3, ~ . - var6)
+vif(model4)</code></pre>
+<pre><code>##     var1     var2     var5 
+## 1.004377 1.012391 1.008489</code></pre>
+<pre class="r"><code>summary(model4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = response ~ var1 + var2 + var5, data = my_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.2887 -0.6780 -0.1195  0.3639  1.8939 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -5.49457    4.42946  -1.240    0.229    
+## var1         0.12457    0.02479   5.026 6.48e-05 ***
+## var2         2.03923    0.04057  50.268  &lt; 2e-16 ***
+## var5         9.97519    0.08976 111.135  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9416 on 20 degrees of freedom
+## Multiple R-squared:  0.9988, Adjusted R-squared:  0.9986 
+## F-statistic:  5337 on 3 and 20 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Next, we still have to do a residual analysis. For doing this, we will do the “Residuals vs Fitted” and “Normal Q-Q” plots and run the appropriate tests, as before.</p>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(model4, which = c(1, 2))</code></pre>
+<p><img src="sol_TOlkuB_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<p>From the plots, the assumptions of equal variance and normality for the residuals seem to hold. However, as fewer data points make the visual analysis difficult, it is also important to run the tests, namely, <code>ncvTest()</code> and <code>shapiro.test()</code> for the residuals (<code>residuals()</code>).</p>
+<pre class="r"><code>ncvTest(model4)</code></pre>
+<pre><code>## Non-constant Variance Score Test 
+## Variance formula: ~ fitted.values 
+## Chisquare = 1.481062, Df = 1, p = 0.22361</code></pre>
+<pre class="r"><code>shapiro.test(residuals(model4))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(model4)
+## W = 0.93153, p-value = 0.1055</code></pre>
+<p>From the tests results, we fail to reject the null hypotheses—meaning that there is no evidence from the data that the assumptions of equal variance and normality for the residuals do not hold.</p>
+<p>Our final model is</p>
+<p><span class="math display">\[\begin{align*}
+\texttt{response}_i &amp;= -5.495 + 0.125\texttt{var1}_i + 2.039\texttt{var2}_i + 9.975\texttt{var5}_i
+\end{align*}\]</span></p>
+</div>
+<div id="predicting-unknown-values-2" class="section level3 unnumbered">
+<h3 class="unnumbered">Predicting unknown values</h3>
+<p>Now that we have a “good” fitted model, we can predict the value of <code>response</code> for new values of <code>var1</code>, <code>var2</code>, and <code>var5</code>. For instance, we can predict the value of <code>response</code>, such that <code>var1</code>, <code>var2</code> and <code>var5</code> are equal to 55, 100, and 70, respectively. We can also include a confidence and a prediction interval.</p>
+<pre class="r"><code>newdata &lt;- data.frame(var1 = 55, var2 = 100, var5 = 70)
+(pred1 &lt;- predict(object = model4, newdata = newdata, interval = &#39;confidence&#39;))</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 903.5433 891.3115 915.7751</code></pre>
+<pre class="r"><code>(pred2 &lt;- predict(object = model4, newdata = newdata, interval = &#39;prediction&#39;))</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 903.5433 891.1548 915.9318</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

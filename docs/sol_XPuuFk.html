@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="André Victor Ribeiro Amaral" />
+
+
+<title>Tutorial 03</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">STAT 215</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tutorial01.html">Tutorial 01</a>
+</li>
+<li>
+  <a href="tutorial02.html">Tutorial 02</a>
+</li>
+<li>
+  <a href="tutorial03.html">Tutorial 03</a>
+</li>
+<li>
+  <a href="tutorial04.html">Tutorial 04</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://avramaral.github.io/">
+    <span class="fa fa-globe"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial 03</h1>
+<h4 class="author">André Victor Ribeiro Amaral</h4>
+
+</div>
+
+
+<div id="problem-01" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 01</h2>
+<p>An experiment is designed to test the tensile strength of Portland cement. Four different mixing techniques that can be used economically are tested and the resulting tensile strength is measured. A completely randomized experiment was conducted with four replications for each mixing technique and the following data were collected</p>
+<pre class="r"><code>data &lt;- data.frame(mixingType = as.factor(rep(x = LETTERS[1:4], each = 4)), strength = c(3129, 3000, 2865, 2890, 3200, 3300, 2975, 3150, 2800, 2900, 2985, 3050, 2600, 2700, 2600, 2765))
+data</code></pre>
+<pre><code>##    mixingType strength
+## 1           A     3129
+## 2           A     3000
+## 3           A     2865
+## 4           A     2890
+## 5           B     3200
+## 6           B     3300
+## 7           B     2975
+## 8           B     3150
+## 9           C     2800
+## 10          C     2900
+## 11          C     2985
+## 12          C     3050
+## 13          D     2600
+## 14          D     2700
+## 15          D     2600
+## 16          D     2765</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Do boxplots for the tensile strength as a function of treatment. Comment on what you observe.</li>
+</ol>
+<pre class="r"><code>attach(data)
+boxplot(formula = strength ~ mixingType)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>The boxplots show similar dispersion in all the boxes, backing the assumption that variances are equal for all treatments. We see also that treatment B is best while D is worst. Also, since the box for D does not overlap the other boxes, the difference between D and the rest will probably be significant.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Calculate summary statistics for the different treatments. Comment on the values for the variance.</li>
+</ol>
+<pre class="r"><code>str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    16 obs. of  2 variables:
+##  $ mixingType: Factor w/ 4 levels &quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;: 1 1 1 1 2 2 2 2 3 3 ...
+##  $ strength  : num  3129 3000 2865 2890 3200 ...</code></pre>
+<pre class="r"><code>tapply(X = strength, INDEX = mixingType, FUN = summary)</code></pre>
+<pre><code>## $A
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2865    2884    2945    2971    3032    3129 
+## 
+## $B
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2975    3106    3175    3156    3225    3300 
+## 
+## $C
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2800    2875    2942    2934    3001    3050 
+## 
+## $D
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2600    2600    2650    2666    2716    2765</code></pre>
+<pre class="r"><code>tapply(X = strength, INDEX = mixingType, FUN = var)</code></pre>
+<pre><code>##        A        B        C        D 
+## 14534.00 18489.58 11722.92  6556.25</code></pre>
+<p>The variances do not seem to be close.</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Do an analysis of variance table and test whether the mixing techniques have an effect on the tensile strength. Use level <span class="math inline">\(\alpha = 0.01\)</span> for this test. What are your conclusions?</li>
+</ol>
+<p>We can do an anova table in two ways. Using <code>lm()</code> we have</p>
+<pre class="r"><code>lm1 &lt;- lm(strength ~ mixingType) 
+summary(lm1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = strength ~ mixingType)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -181.25  -69.94   11.38   63.12  158.00 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2971.00      56.63  52.468 1.51e-15 ***
+## mixingTypeB   185.25      80.08   2.313   0.0392 *  
+## mixingTypeC   -37.25      80.08  -0.465   0.6501    
+## mixingTypeD  -304.75      80.08  -3.806   0.0025 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 113.3 on 12 degrees of freedom
+## Multiple R-squared:  0.7609, Adjusted R-squared:  0.7011 
+## F-statistic: 12.73 on 3 and 12 DF,  p-value: 0.0004887</code></pre>
+<pre class="r"><code>anova(lm1)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: strength
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## mixingType  3 489740  163247  12.728 0.0004887 ***
+## Residuals  12 153908   12826                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>And using <code>aov()</code> we have</p>
+<pre class="r"><code>mod1 &lt;- aov(strength ~ mixingType) 
+summary(mod1)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## mixingType   3 489740  163247   12.73 0.000489 ***
+## Residuals   12 153908   12826                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(mod1)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: strength
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## mixingType  3 489740  163247  12.728 0.0004887 ***
+## Residuals  12 153908   12826                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The p-value for the test that the treatments have no effect on the tensile strength of Portland cement is <span class="math inline">\(0.00049\)</span>, so we reject the null hypothesis of no effects.</p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>What are the estimated values for the average values for the four treatments <span class="math inline">\(\hat{\mu} + \hat{\tau}_i\)</span>, <span class="math inline">\(i = 1, \cdots, 4\)</span>? What are the estimated values for the effects <span class="math inline">\(\tau_i\)</span>, <span class="math inline">\(\forall i\)</span>? Use <code>model.tables()</code> for this.</li>
+</ol>
+<pre class="r"><code>model.tables(x = mod1, type = &#39;means&#39;, se = TRUE)</code></pre>
+<pre><code>## Tables of means
+## Grand mean
+##          
+## 2931.812 
+## 
+##  mixingType 
+## mixingType
+##      A      B      C      D 
+## 2971.0 3156.2 2933.8 2666.2 
+## 
+## Standard errors for differences of means
+##         mixingType
+##              80.08
+## replic.          4</code></pre>
+<pre class="r"><code>model.tables(x = mod1, type = &#39;effects&#39;, se = TRUE)</code></pre>
+<pre><code>## Tables of effects
+## 
+##  mixingType 
+## mixingType
+##       A       B       C       D 
+##   39.19  224.44    1.94 -265.56 
+## 
+## Standard errors of effects
+##         mixingType
+##              56.63
+## replic.          4</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>What are the estimated values for the variance <span class="math inline">\(\sigma^2\)</span> and standard deviation <span class="math inline">\(\sigma\)</span> of the experimental error?</li>
+</ol>
+<p>The estimated variance for the experimental error is found in the ANOVA table as the MSE for residuals, which in this case is <span class="math inline">\(12826\)</span>. The standard deviation is</p>
+<pre class="r"><code>sqrt(12826)</code></pre>
+<pre><code>## [1] 113.2519</code></pre>
+<pre class="r"><code># Alternatively, one can use the following command
+summary(lm1)$sigma</code></pre>
+<pre><code>## [1] 113.2506</code></pre>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?</li>
+</ol>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(mod1, which = c(1, 2))</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<p>Normality seems a reasonable assumption, judging by the plots, but equal variances, not so much.</p>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>So far we have judged whether variances are uniform across treatment levels using graphs but there is a test for this, known as Levene’s test. This test is available in the <code>car</code> package as <code>leveneTest()</code>, with argument the result of an <code>lm()</code> model. Use this test to determine whether variances are homogeneous across mixing techniques.</li>
+</ol>
+<pre class="r"><code>library(&#39;car&#39;)
+leveneTest(lm1)</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  3  0.1833 0.9057
+##       12</code></pre>
+<p>The p-value is large so we fail to reject the null hypothesis of equal variances.</p>
+<ol start="8" style="list-style-type: lower-alpha">
+<li>Use the Shapiro-Wilk test for normality on the normalized residuals.</li>
+</ol>
+<pre class="r"><code>shapiro.test(residuals(lm1))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(lm1)
+## W = 0.97046, p-value = 0.846</code></pre>
+<p>The p-value is large so we fail to reject the null hypothesis of normality for the residuals.</p>
+<ol style="list-style-type: lower-roman">
+<li>Do pairwise comparisons using Tukey’s Honest Significant Difference method. Plot the confidence intervals. What comparisons are significant according to this method?</li>
+</ol>
+<pre class="r"><code>mod1.tky &lt;- TukeyHSD(mod1)
+mod1.tky</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = strength ~ mixingType)
+## 
+## $mixingType
+##        diff        lwr        upr     p adj
+## B-A  185.25  -52.50029  423.00029 0.1493561
+## C-A  -37.25 -275.00029  200.50029 0.9652776
+## D-A -304.75 -542.50029  -66.99971 0.0115923
+## C-B -222.50 -460.25029   15.25029 0.0693027
+## D-B -490.00 -727.75029 -252.24971 0.0002622
+## D-C -267.50 -505.25029  -29.74971 0.0261838</code></pre>
+<pre class="r"><code>plot(mod1.tky)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>All pairwise comparison involving treatment D are significant (at the 5% level). This treatment is different from the rest but the others cannot be distinguished.</p>
+<ol start="10" style="list-style-type: lower-alpha">
+<li>If you had to choose a mixing technique, which one would you choose and why?</li>
+</ol>
+<p>A, B, or C, if the price is the same; otherwise, the cheapest among the three.</p>
+</div>
+<div id="problem-02" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 02</h2>
+<p>For this exercise, we will use the data set <code>InsectSprays</code>, which is available in <code>R</code>. In this experiment, 6 different insecticides were used and the number of dead insects in each plot were counted. There were 12 replications for each treatment level (insecticide), for a total of 72 observations.</p>
+<pre class="r"><code>head(InsectSprays)</code></pre>
+<pre><code>##   count spray
+## 1    10     A
+## 2     7     A
+## 3    20     A
+## 4    14     A
+## 5    14     A
+## 6    12     A</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Draw a boxplot for the results and add axes labels and a title. Add the points for each treatment level. Observe that there is <em>overplotting</em>. Add some noise in the horizontal direction to avoid this problem. Comment on what you observe.</li>
+</ol>
+<pre class="r"><code>attach(InsectSprays)
+boxplot(count ~ spray, data = InsectSprays, xlab = &quot;Type of spray&quot;, ylab = &quot;Insect count&quot;, main = &quot;InsectSprays data&quot;)
+points(count ~ jitter(as.numeric(spray)), data = InsectSprays)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Variance seems to be proportional to insect count.</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Do an analysis of variance and test whether the different insecticides have an effect. Use level <span class="math inline">\(\alpha = 0.01\)</span> for this test. What are your conclusions?</li>
+</ol>
+<pre class="r"><code>fm1 &lt;- aov(count ~ spray, data = InsectSprays) 
+summary(fm1)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## spray        5   2669   533.8    34.7 &lt;2e-16 ***
+## Residuals   66   1015    15.4                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The p-value for the test of no treatment effect is practically zero, so we reject the null hypothesis that the treatments have no effect.</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>What are the estimated values for the average values for the six treatments <span class="math inline">\(\hat{\mu} + \hat{\tau}_i\)</span>, <span class="math inline">\(i = 1, \cdots, 6\)</span>? What are the estimated values for the effects <span class="math inline">\(\tau_i\)</span>, <span class="math inline">\(\forall i\)</span>? Use <code>model.tables()</code> for this.</li>
+</ol>
+<pre class="r"><code>model.tables(x = fm1, type = &#39;means&#39;, se = TRUE)</code></pre>
+<pre><code>## Tables of means
+## Grand mean
+##     
+## 9.5 
+## 
+##  spray 
+## spray
+##      A      B      C      D      E      F 
+## 14.500 15.333  2.083  4.917  3.500 16.667 
+## 
+## Standard errors for differences of means
+##         spray
+##         1.601
+## replic.    12</code></pre>
+<pre class="r"><code>model.tables(x = fm1, type = &#39;effects&#39;, se = TRUE)</code></pre>
+<pre><code>## Tables of effects
+## 
+##  spray 
+## spray
+##      A      B      C      D      E      F 
+##  5.000  5.833 -7.417 -4.583 -6.000  7.167 
+## 
+## Standard errors of effects
+##         spray
+##         1.132
+## replic.    12</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>What are the estimated values for the variance <span class="math inline">\(\sigma^2\)</span> and standard deviation <span class="math inline">\(\sigma\)</span> of the experimental error?</li>
+</ol>
+<p>The estimated variance for the experimental error is found in the ANOVA table as the MSE for residuals, which in this case is <span class="math inline">\(15.4\)</span>. The standard deviation is</p>
+<pre class="r"><code>sqrt(15.4)</code></pre>
+<pre><code>## [1] 3.924283</code></pre>
+<pre class="r"><code># Alternatively, one can use the following command
+summary(lm(count ~ spray, data = InsectSprays))$sigma</code></pre>
+<pre><code>## [1] 3.921902</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?</li>
+</ol>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(fm1, which = c(1, 2))</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<p>In this case the plots do <strong>not</strong> look good. The first one shows that variance increases with fitted value; in particular, the points on the right of the graph, which correspond to larger fitted values, have a wider spread than the points on the left of the graph. On the other hand, the <code>Normal Q-Q</code> plot shows a good fit at the center of the sample, but both tails are from the straight line.</p>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>Use Levene’s test for equal variances and Shapiro-Wilk for normality using this model and comment on your results.</li>
+</ol>
+<pre class="r"><code>library(&#39;car&#39;) 
+leveneTest(count ~ spray)</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##       Df F value   Pr(&gt;F)   
+## group  5  3.8214 0.004223 **
+##       66                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>shapiro.test(residuals(fm1))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(fm1)
+## W = 0.96006, p-value = 0.02226</code></pre>
+<p>Levene’s test has a small p-value and we reject the hypothesis of homoscedasticity. The Shapiro-Wilk test has a moderately small p-value, and the normality hypothesis for the residuals may be suspect.</p>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>Consider an alternative model using the square root of the number of counts. Obtain the analysis of variance table and compare with the previous model.</li>
+</ol>
+<pre class="r"><code>fm2 &lt;- aov(sqrt(count) ~ spray, data = InsectSprays) 
+summary(fm2)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## spray        5  88.44  17.688    44.8 &lt;2e-16 ***
+## Residuals   66  26.06   0.395                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Again, the p-value for the overall test is practically zero. Observe the reduction in MSE, which is the estimated error variance.</p>
+<ol start="8" style="list-style-type: lower-alpha">
+<li>Draw the diagnostic plots for this model and comment.</li>
+</ol>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(fm2, which = c(1, 2))</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<p>Both plots look much better now. The first one shows a more homogeneous spread of points for all fitted values. Also, in the second plot, the fit is very good, so the hypothesis of normality seems to be valid now.</p>
+<ol style="list-style-type: lower-roman">
+<li>Again, use Levene’s tests and Shapiro-Wilk and comment on your results</li>
+</ol>
+<pre class="r"><code>leveneTest(sqrt(count) ~ spray)</code></pre>
+<pre><code>## Levene&#39;s Test for Homogeneity of Variance (center = median)
+##       Df F value Pr(&gt;F)
+## group  5  0.8836 0.4971
+##       66</code></pre>
+<pre class="r"><code>shapiro.test(residuals(fm2))</code></pre>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(fm2)
+## W = 0.98721, p-value = 0.6814</code></pre>
+<p>In this case, both tests have large p-values and we cannot reject the hypotheses of homoscedasticity and Gaussianity for the residuals.</p>
+</div>
+<div id="problem-03" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 03</h2>
+<p>For this exercise, we will use the data set <code>ToothGrowth</code>, which is available in <code>R</code>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Explore the data in <code>ToothGrowth</code>.</li>
+</ol>
+<pre class="r"><code>str(ToothGrowth)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels &quot;OJ&quot;,&quot;VC&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...</code></pre>
+<pre class="r"><code>head(ToothGrowth)</code></pre>
+<pre><code>##    len supp dose
+## 1  4.2   VC  0.5
+## 2 11.5   VC  0.5
+## 3  7.3   VC  0.5
+## 4  5.8   VC  0.5
+## 5  6.4   VC  0.5
+## 6 10.0   VC  0.5</code></pre>
+<pre class="r"><code>library(&#39;psych&#39;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:car&#39;:
+## 
+##     logit</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre class="r"><code>describe(ToothGrowth)</code></pre>
+<pre><code>##       vars  n  mean   sd median trimmed  mad min  max range  skew kurtosis   se
+## len      1 60 18.81 7.65  19.25   18.95 9.04 4.2 33.9  29.7 -0.14    -1.04 0.99
+## supp*    2 60  1.50 0.50   1.50    1.50 0.74 1.0  2.0   1.0  0.00    -2.03 0.07
+## dose     3 60  1.17 0.63   1.00    1.15 0.74 0.5  2.0   1.5  0.37    -1.55 0.08</code></pre>
+<pre class="r"><code>boxplot(len ~ dose, data = ToothGrowth)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<pre class="r"><code>boxplot(len ~ supp, data = ToothGrowth)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><code>dose</code> is a numerical variable and we would like it to be categorical. Transform it to a factor. Make sure to preserve the order.</li>
+</ol>
+<pre class="r"><code>ToothGrowth$dose = factor(ToothGrowth$dose, levels = c(0.5, 1.0, 2.0), labels = c(&quot;low&quot;, &quot;med&quot;, &quot;high&quot;))
+str(ToothGrowth)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    60 obs. of  3 variables:
+##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
+##  $ supp: Factor w/ 2 levels &quot;OJ&quot;,&quot;VC&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ dose: Factor w/ 3 levels &quot;low&quot;,&quot;med&quot;,&quot;high&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<pre class="r"><code>attach(ToothGrowth) 
+tapply(len,dose, mean)</code></pre>
+<pre><code>##    low    med   high 
+## 10.605 19.735 26.100</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Do a boxplot with the following command and comment on the result.</li>
+</ol>
+<pre class="r"><code>boxplot(len ~ supp * dose, data = ToothGrowth)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>Based the above plotting, we can start analyzing the interaction between <code>supp</code> and <code>dose</code>.</p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Use <code>interaction.plot()</code> to explore possible interactions between the factors.</li>
+</ol>
+<pre class="r"><code>interaction.plot(x.factor = dose, trace.factor = supp, response = len, fun = mean, type = &#39;b&#39;)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>interaction.plot(x.factor = supp, trace.factor = dose, response = len, fun = mean, type = &#39;b&#39;)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+<p>The interactions do not seem to be important.</p>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Use <code>lm()</code> to build and analyze a two-way model.</li>
+</ol>
+<pre class="r"><code>modelA &lt;- lm(len ~ supp * dose)
+summary(modelA)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = len ~ supp * dose)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -8.20  -2.72  -0.27   2.65   8.27 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       13.230      1.148  11.521 3.60e-16 ***
+## suppVC            -5.250      1.624  -3.233  0.00209 ** 
+## dosemed            9.470      1.624   5.831 3.18e-07 ***
+## dosehigh          12.830      1.624   7.900 1.43e-10 ***
+## suppVC:dosemed    -0.680      2.297  -0.296  0.76831    
+## suppVC:dosehigh    5.330      2.297   2.321  0.02411 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.631 on 54 degrees of freedom
+## Multiple R-squared:  0.7937, Adjusted R-squared:  0.7746 
+## F-statistic: 41.56 on 5 and 54 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>anova(modelA)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: len
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## supp       1  205.35  205.35  15.572 0.0002312 ***
+## dose       2 2426.43 1213.22  92.000 &lt; 2.2e-16 ***
+## supp:dose  2  108.32   54.16   4.107 0.0218603 *  
+## Residuals 54  712.11   13.19                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>Use <code>aov()</code> to build and analyze a two-way model.</li>
+</ol>
+<pre class="r"><code>modA &lt;- aov(len ~ supp * dose) 
+summary(modA)</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## supp         1  205.4   205.4  15.572 0.000231 ***
+## dose         2 2426.4  1213.2  92.000  &lt; 2e-16 ***
+## supp:dose    2  108.3    54.2   4.107 0.021860 *  
+## Residuals   54  712.1    13.2                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>Plot the diagnostics graphs and comment on the results.</li>
+</ol>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(modA, which = c(1, 2))</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<ol start="8" style="list-style-type: lower-alpha">
+<li>Use <code>TukeyHSD()</code> with the option <code>which = c('dose')</code>. Comment.</li>
+</ol>
+<pre class="r"><code>modA.tky1 &lt;- TukeyHSD(modA, which = c(&#39;dose&#39;)) 
+plot(modA.tky1)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>modA.tky2 &lt;- TukeyHSD(modA)
+modA.tky2</code></pre>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = len ~ supp * dose)
+## 
+## $supp
+##       diff       lwr       upr     p adj
+## VC-OJ -3.7 -5.579828 -1.820172 0.0002312
+## 
+## $dose
+##            diff       lwr       upr   p adj
+## med-low   9.130  6.362488 11.897512 0.0e+00
+## high-low 15.495 12.727488 18.262512 0.0e+00
+## high-med  6.365  3.597488  9.132512 2.7e-06
+## 
+## $`supp:dose`
+##                  diff        lwr        upr     p adj
+## VC:low-OJ:low   -5.25 -10.048124 -0.4518762 0.0242521
+## OJ:med-OJ:low    9.47   4.671876 14.2681238 0.0000046
+## VC:med-OJ:low    3.54  -1.258124  8.3381238 0.2640208
+## OJ:high-OJ:low  12.83   8.031876 17.6281238 0.0000000
+## VC:high-OJ:low  12.91   8.111876 17.7081238 0.0000000
+## OJ:med-VC:low   14.72   9.921876 19.5181238 0.0000000
+## VC:med-VC:low    8.79   3.991876 13.5881238 0.0000210
+## OJ:high-VC:low  18.08  13.281876 22.8781238 0.0000000
+## VC:high-VC:low  18.16  13.361876 22.9581238 0.0000000
+## VC:med-OJ:med   -5.93 -10.728124 -1.1318762 0.0073930
+## OJ:high-OJ:med   3.36  -1.438124  8.1581238 0.3187361
+## VC:high-OJ:med   3.44  -1.358124  8.2381238 0.2936430
+## OJ:high-VC:med   9.29   4.491876 14.0881238 0.0000069
+## VC:high-VC:med   9.37   4.571876 14.1681238 0.0000058
+## VC:high-OJ:high  0.08  -4.718124  4.8781238 1.0000000</code></pre>
+<pre class="r"><code>par(mfrow = c(3,1)) 
+plot(modA.tky2)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<ol style="list-style-type: lower-roman">
+<li>Fit a model without interactions using <code>lm()</code> and compare with the complete model using anova. What is your conclusion?</li>
+</ol>
+<pre class="r"><code>modelB &lt;- lm(len ~ supp + dose) 
+anova(modelB)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: len
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## supp       1  205.35  205.35  14.017 0.0004293 ***
+## dose       2 2426.43 1213.22  82.811 &lt; 2.2e-16 ***
+## Residuals 56  820.43   14.65                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(modelA, modelB)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: len ~ supp * dose
+## Model 2: len ~ supp + dose
+##   Res.Df    RSS Df Sum of Sq     F  Pr(&gt;F)  
+## 1     54 712.11                             
+## 2     56 820.43 -2   -108.32 4.107 0.02186 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="problem-04" class="section level2 unnumbered">
+<h2 class="unnumbered">Problem 04</h2>
+<p>For this problem, download (and read) the <code>problem4.csv</code> file <a href="./others/problem4.csv">here</a>.</p>
+<pre class="r"><code>data &lt;- read.csv(&#39;others/problem4.csv&#39;, header = T) 
+data$A &lt;- as.factor(data$A)
+data$B &lt;- as.factor(data$B)
+data$C &lt;- as.factor(data$C)</code></pre>
+<ol style="list-style-type: lower-alpha">
+<li>Look at the structure and explore the data.</li>
+</ol>
+<pre class="r"><code>str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    120 obs. of  4 variables:
+##  $ Y: num  4.1 4.6 3.7 4.9 5.2 4.7 5 6.1 5.5 3.9 ...
+##  $ A: Factor w/ 4 levels &quot;a1&quot;,&quot;a2&quot;,&quot;a3&quot;,..: 1 1 1 2 2 2 3 3 3 4 ...
+##  $ B: Factor w/ 3 levels &quot;b1&quot;,&quot;b2&quot;,&quot;b3&quot;: 1 2 3 1 2 3 1 2 3 1 ...
+##  $ C: Factor w/ 2 levels &quot;c1&quot;,&quot;c2&quot;: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<pre class="r"><code>boxplot(Y ~ A, data = data)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<pre class="r"><code>boxplot(Y ~ B, data = data)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-32-2.png" width="672" /></p>
+<pre class="r"><code>boxplot(Y ~ C, data = data)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-32-3.png" width="672" /></p>
+<pre class="r"><code>boxplot(Y ~ A * B * C, cex.axis = 0.5, las = 2, data = data)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-32-4.png" width="672" /></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Using <code>lm()</code> fit a complete model to this data.</li>
+</ol>
+<pre class="r"><code>mod4w1 &lt;- lm(Y ~ A * B * C, data = data)
+anova(mod4w1) # All effects and interactions</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Y
+##           Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
+## A          3 40.322 13.4405 182.4506 &lt; 2.2e-16 ***
+## B          2  8.821  4.4106  59.8722 &lt; 2.2e-16 ***
+## C          1  4.760  4.7601  64.6165 2.356e-12 ***
+## A:B        6  0.814  0.1357   1.8420   0.09895 .  
+## A:C        3  2.351  0.7836  10.6376 4.216e-06 ***
+## B:C        2  0.126  0.0631   0.8563   0.42793    
+## A:B:C      6  0.944  0.1573   2.1354   0.05616 .  
+## Residuals 96  7.072  0.0737                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Plot the interactions and comment.</li>
+</ol>
+<pre class="r"><code>interaction.plot(x.factor = data$A, trace.factor = data$B, response = data$Y)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<pre class="r"><code>interaction.plot(x.factor = data$A, trace.factor = data$C, response = data$Y)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-34-2.png" width="672" /></p>
+<pre class="r"><code>interaction.plot(x.factor = data$B, trace.factor = data$C, response = data$Y)</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-34-3.png" width="672" /></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Using update and a critical p-value of <span class="math inline">\(0.05\)</span>, remove all interactions that are not significant. After removing each term, produce a new ANOVA table to decide on the next step. What is the minimal adequate model?</li>
+</ol>
+<pre class="r"><code>mod4w2 &lt;- update(mod4w1, . ~ . - A:B:C) 
+anova(mod4w2)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Y
+##            Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
+## A           3 40.322 13.4405 171.0282 &lt; 2.2e-16 ***
+## B           2  8.821  4.4106  56.1239 &lt; 2.2e-16 ***
+## C           1  4.760  4.7601  60.5712 6.020e-12 ***
+## A:B         6  0.814  0.1357   1.7267    0.1222    
+## A:C         3  2.351  0.7836   9.9717 8.025e-06 ***
+## B:C         2  0.126  0.0631   0.8027    0.4509    
+## Residuals 102  8.016  0.0786                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>We now remove interaction <code>B</code> and <code>C</code>.</p>
+<pre class="r"><code>mod4w3 &lt;- update(mod4w2, . ~ . - B:C) 
+anova(mod4w3)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Y
+##            Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
+## A           3 40.322 13.4405 171.6795 &lt; 2.2e-16 ***
+## B           2  8.821  4.4106  56.3376 &lt; 2.2e-16 ***
+## C           1  4.760  4.7601  60.8019 5.080e-12 ***
+## A:B         6  0.814  0.1357   1.7333    0.1205    
+## A:C         3  2.351  0.7836  10.0096 7.477e-06 ***
+## Residuals 104  8.142  0.0783                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>We now remove interaction <code>A</code>and <code>B</code>.</p>
+<pre class="r"><code>mod4w4 &lt;- update(mod4w3, . ~ . - A:B) 
+anova(mod4w4)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Y
+##            Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
+## A           3 40.322 13.4405 165.0771 &lt; 2.2e-16 ***
+## B           2  8.821  4.4106  54.1710 &lt; 2.2e-16 ***
+## C           1  4.760  4.7601  58.4635 8.353e-12 ***
+## A:C         3  2.351  0.7836   9.6247 1.074e-05 ***
+## Residuals 110  8.956  0.0814                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>This is the final model.</p>
+<p>If we try to remove the next interaction</p>
+<pre class="r"><code>mod4w5 &lt;- update(mod4w4, . ~ . - A:C) 
+anova(mod4w5)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Y
+##            Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## A           3 40.322 13.4405 134.321 &lt; 2.2e-16 ***
+## B           2  8.821  4.4106  44.078 7.068e-15 ***
+## C           1  4.760  4.7601  47.571 3.227e-10 ***
+## Residuals 113 11.307  0.1001                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>anova(mod4w4, mod4w5)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Y ~ A + B + C + A:C
+## Model 2: Y ~ A + B + C
+##   Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1    110  8.9562                                  
+## 2    113 11.3071 -3   -2.3509 9.6247 1.074e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Compare your final model with the complete model using <code>anova()</code>.</li>
+</ol>
+<pre class="r"><code>anova(mod4w1, mod4w4)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Y ~ A * B * C
+## Model 2: Y ~ A + B + C + A:C
+##   Res.Df    RSS  Df Sum of Sq      F  Pr(&gt;F)  
+## 1     96 7.0720                               
+## 2    110 8.9562 -14   -1.8842 1.8269 0.04524 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>Plot the diagnostics graphs and comment on the results.</li>
+</ol>
+<pre class="r"><code>par(mfrow = c(1, 2))
+plot(mod4w1, which = c(1, 2))</code></pre>
+<p><img src="sol_XPuuFk_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<pre class="r"><code>par(mfrow = c(1, 1))</code></pre>
+<p>Based on the diagnostic plots, the model assumptions seem to hold for <code>mod4w1</code>.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

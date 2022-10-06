@@ -1,0 +1,378 @@
+---
+title: 'Tutorial 03'
+author: 'André Victor Ribeiro Amaral'
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+## Problem 01 {-}
+
+An experiment is designed to test the tensile strength of Portland cement. Four different mixing techniques that can be used economically are tested and the resulting tensile strength is measured. A completely randomized experiment was conducted with four replications for each mixing technique and the following data were collected
+
+```{r}
+data <- data.frame(mixingType = as.factor(rep(x = LETTERS[1:4], each = 4)), strength = c(3129, 3000, 2865, 2890, 3200, 3300, 2975, 3150, 2800, 2900, 2985, 3050, 2600, 2700, 2600, 2765))
+data
+```
+a) Do boxplots for the tensile strength as a function of treatment. Comment on what you observe.
+
+```{r}
+attach(data)
+boxplot(formula = strength ~ mixingType)
+```
+
+The boxplots show similar dispersion in all the boxes, backing the assumption that variances are equal for all treatments. We see also that treatment B is best while D is worst. Also, since the box for D does not overlap the other boxes, the difference between D and the rest will probably be significant.
+
+b) Calculate summary statistics for the different treatments. Comment on the values for the variance.
+
+```{r}
+str(data)
+
+tapply(X = strength, INDEX = mixingType, FUN = summary)
+tapply(X = strength, INDEX = mixingType, FUN = var)
+```
+
+The variances do not seem to be close.
+
+c) Do an analysis of variance table and test whether the mixing techniques have an effect on the tensile strength. Use level $\alpha = 0.01$ for this test. What are your conclusions?
+
+We can do an anova table in two ways. Using `lm()` we have
+
+```{r}
+lm1 <- lm(strength ~ mixingType) 
+summary(lm1)
+anova(lm1)
+```
+And using `aov()` we have
+
+```{r}
+mod1 <- aov(strength ~ mixingType) 
+summary(mod1)
+anova(mod1)
+```
+The p-value for the test that the treatments have no effect on the tensile strength of Portland cement is $0.00049$, so we reject the null hypothesis of no effects.
+
+d) What are the estimated values for the average values for the four treatments $\hat{\mu} + \hat{\tau}_i$, $i = 1, \cdots, 4$? What are the estimated values for the effects $\tau_i$, $\forall i$? Use `model.tables()` for this.
+
+```{r}
+model.tables(x = mod1, type = 'means', se = TRUE)
+model.tables(x = mod1, type = 'effects', se = TRUE)
+```
+
+e) What are the estimated values for the variance $\sigma^2$ and standard deviation $\sigma$ of the experimental error?
+
+The estimated variance for the experimental error is found in the ANOVA table as the MSE for residuals, which in this case is $12826$. The standard deviation is
+```{r}
+sqrt(12826)
+# Alternatively, one can use the following command
+summary(lm1)$sigma
+```
+
+
+f) Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?
+```{r}
+par(mfrow = c(1, 2))
+plot(mod1, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+Normality seems a reasonable assumption, judging by the plots, but equal variances, not so much.
+
+g) So far we have judged whether variances are uniform across treatment levels using graphs but there is a test for this, known as Levene’s test. This test is available in the `car` package as `leveneTest()`, with argument the result of an `lm()` model. Use this test to determine whether variances are homogeneous across mixing techniques.
+
+```{r}
+library('car')
+leveneTest(lm1)
+```
+
+The p-value is large so we fail to reject the null hypothesis of equal variances.
+
+h) Use the Shapiro-Wilk test for normality on the normalized residuals.
+
+```{r}
+shapiro.test(residuals(lm1))
+```
+
+The p-value is large so we fail to reject the null hypothesis of normality for the residuals.
+
+i) Do pairwise comparisons using Tukey’s Honest Significant Difference method. Plot the confidence intervals. What comparisons are significant according to this method?
+
+```{r}
+mod1.tky <- TukeyHSD(mod1)
+mod1.tky
+plot(mod1.tky)
+```
+
+All pairwise comparison involving treatment D are significant (at the 5% level). This treatment is different from the rest but the others cannot be distinguished.
+
+j) If you had to choose a mixing technique, which one would you choose and why?
+
+A, B, or C, if the price is the same; otherwise, the cheapest among the three.
+
+## Problem 02 {-}
+
+For this exercise, we will use the data set `InsectSprays`, which is available in `R`. In this experiment, 6 different insecticides were used and the number of dead insects in each plot were counted. There were 12 replications for each treatment level (insecticide), for a total of 72 observations.
+
+```{r}
+head(InsectSprays)
+```
+
+a) Draw a boxplot for the results and add axes labels and a title. Add the points for each treatment level. Observe that there is *overplotting*. Add some noise in the horizontal direction to avoid this problem. Comment on what you observe.
+
+```{r}
+attach(InsectSprays)
+boxplot(count ~ spray, data = InsectSprays, xlab = "Type of spray", ylab = "Insect count", main = "InsectSprays data")
+points(count ~ jitter(as.numeric(spray)), data = InsectSprays)
+```
+
+Variance seems to be proportional to insect count.
+
+b) Do an analysis of variance and test whether the different insecticides have an effect. Use level $\alpha = 0.01$ for this test. What are your conclusions?
+
+```{r}
+fm1 <- aov(count ~ spray, data = InsectSprays) 
+summary(fm1)
+```
+
+The p-value for the test of no treatment effect is practically zero, so we reject the null hypothesis that the treatments have no effect.
+
+c) What are the estimated values for the average values for the six treatments $\hat{\mu} + \hat{\tau}_i$, $i = 1, \cdots, 6$? What are the estimated values for the effects $\tau_i$, $\forall i$? Use `model.tables()` for this.
+
+```{r}
+model.tables(x = fm1, type = 'means', se = TRUE)
+model.tables(x = fm1, type = 'effects', se = TRUE)
+```
+
+d) What are the estimated values for the variance $\sigma^2$ and standard deviation $\sigma$ of the experimental error?
+
+The estimated variance for the experimental error is found in the ANOVA table as the MSE for residuals, which in this case is $15.4$. The standard deviation is
+```{r}
+sqrt(15.4)
+# Alternatively, one can use the following command
+summary(lm(count ~ spray, data = InsectSprays))$sigma
+```
+
+e) Make residual plots for checking assumptions. Do you think the usual assumptions for the model are reasonable in this experiment?
+
+```{r}
+par(mfrow = c(1, 2))
+plot(fm1, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+In this case the plots do **not** look good. The first one shows that variance increases with fitted value; in particular, the points on the right of the graph, which correspond to larger fitted values, have a wider spread than the points on the left of the graph. On the other hand, the `Normal Q-Q` plot shows a good fit at the center of the sample, but both tails are from the straight line.
+
+f) Use Levene’s test for equal variances and Shapiro-Wilk for normality using this model and comment on your results.
+
+```{r}
+library('car') 
+leveneTest(count ~ spray)
+shapiro.test(residuals(fm1))
+```
+
+Levene’s test has a small p-value and we reject the hypothesis of homoscedasticity. The Shapiro-Wilk test has a moderately small p-value, and the normality hypothesis for the residuals may be suspect.
+
+g) Consider an alternative model using the square root of the number of counts. Obtain the analysis of variance table and compare with the previous model.
+
+```{r}
+fm2 <- aov(sqrt(count) ~ spray, data = InsectSprays) 
+summary(fm2)
+```
+
+Again, the p-value for the overall test is practically zero. Observe the reduction in MSE, which is the estimated error variance.
+
+h) Draw the diagnostic plots for this model and comment.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(fm2, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+Both plots look much better now. The first one shows a more homogeneous spread of points for all fitted values. Also, in the second plot, the fit is very good, so the hypothesis of normality seems to be valid now.
+
+i) Again, use Levene’s tests and Shapiro-Wilk and comment on your results
+
+```{r}
+leveneTest(sqrt(count) ~ spray)
+shapiro.test(residuals(fm2))
+```
+
+In this case, both tests have large p-values and we cannot reject the hypotheses of homoscedasticity and Gaussianity for the residuals.
+
+## Problem 03 {-}
+
+For this exercise, we will use the data set `ToothGrowth`, which is available in `R`.
+
+a) Explore the data in `ToothGrowth`.
+
+```{r}
+str(ToothGrowth)
+head(ToothGrowth)
+
+library('psych')
+describe(ToothGrowth)
+
+boxplot(len ~ dose, data = ToothGrowth)
+boxplot(len ~ supp, data = ToothGrowth)
+```
+
+b) `dose` is a numerical variable and we would like it to be categorical. Transform it to a factor. Make sure to preserve the order.
+
+```{r}
+ToothGrowth$dose = factor(ToothGrowth$dose, levels = c(0.5, 1.0, 2.0), labels = c("low", "med", "high"))
+str(ToothGrowth)
+attach(ToothGrowth) 
+tapply(len,dose, mean)
+```
+
+
+c) Do a boxplot with the following command and comment on the result.
+
+```{r}
+boxplot(len ~ supp * dose, data = ToothGrowth)
+```
+
+Based the above plotting, we can start analyzing the interaction between `supp` and `dose`.
+
+d) Use `interaction.plot()` to explore possible interactions between the factors.
+
+```{r}
+interaction.plot(x.factor = dose, trace.factor = supp, response = len, fun = mean, type = 'b')
+
+interaction.plot(x.factor = supp, trace.factor = dose, response = len, fun = mean, type = 'b')
+```
+
+The interactions do not seem to be important.
+
+e) Use `lm()` to build and analyze a two-way model.
+
+```{r}
+modelA <- lm(len ~ supp * dose)
+summary(modelA)
+anova(modelA)
+```
+
+f) Use `aov()` to build and analyze a two-way model.
+
+```{r}
+modA <- aov(len ~ supp * dose) 
+summary(modA)
+```
+
+
+g) Plot the diagnostics graphs and comment on the results.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(modA, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+h) Use `TukeyHSD()` with the option `which = c('dose')`. Comment.
+
+```{r}
+modA.tky1 <- TukeyHSD(modA, which = c('dose')) 
+plot(modA.tky1)
+modA.tky2 <- TukeyHSD(modA)
+modA.tky2
+par(mfrow = c(3,1)) 
+plot(modA.tky2)
+par(mfrow = c(1, 1))
+```
+
+i) Fit a model without interactions using `lm()` and compare with the complete model using anova. What is your conclusion?
+
+```{r}
+modelB <- lm(len ~ supp + dose) 
+anova(modelB)
+anova(modelA, modelB)
+```
+
+## Problem 04 {-}
+
+For this problem, download (and read) the `problem4.csv` file [here](./others/problem4.csv).
+
+```{r}
+data <- read.csv('others/problem4.csv', header = T) 
+data$A <- as.factor(data$A)
+data$B <- as.factor(data$B)
+data$C <- as.factor(data$C)
+```
+
+a) Look at the structure and explore the data.
+
+```{r}
+str(data)
+
+boxplot(Y ~ A, data = data)
+boxplot(Y ~ B, data = data)
+boxplot(Y ~ C, data = data)
+
+boxplot(Y ~ A * B * C, cex.axis = 0.5, las = 2, data = data)
+```
+
+b) Using `lm()` fit a complete model to this data.
+
+```{r}
+mod4w1 <- lm(Y ~ A * B * C, data = data)
+anova(mod4w1) # All effects and interactions
+```
+
+c) Plot the interactions and comment.
+
+```{r}
+interaction.plot(x.factor = data$A, trace.factor = data$B, response = data$Y)
+interaction.plot(x.factor = data$A, trace.factor = data$C, response = data$Y)
+interaction.plot(x.factor = data$B, trace.factor = data$C, response = data$Y)
+```
+
+d) Using update and a critical p-value of $0.05$, remove all interactions that are not significant. After removing each term, produce a new ANOVA table to decide on the next step. What is the minimal adequate model? 
+
+```{r}
+mod4w2 <- update(mod4w1, . ~ . - A:B:C) 
+anova(mod4w2)
+```
+
+We now remove interaction `B` and `C`.
+
+```{r}
+mod4w3 <- update(mod4w2, . ~ . - B:C) 
+anova(mod4w3)
+```
+We now remove interaction `A`and `B`.
+
+```{r}
+mod4w4 <- update(mod4w3, . ~ . - A:B) 
+anova(mod4w4)
+```
+
+This is the final model.
+
+If we try to remove the next interaction
+
+```{r}
+mod4w5 <- update(mod4w4, . ~ . - A:C) 
+anova(mod4w5)
+
+anova(mod4w4, mod4w5)
+```
+
+e) Compare your final model with the complete model using `anova()`.
+
+```{r}
+anova(mod4w1, mod4w4)
+```
+
+f) Plot the diagnostics graphs and comment on the results.
+
+```{r}
+par(mfrow = c(1, 2))
+plot(mod4w1, which = c(1, 2))
+par(mfrow = c(1, 1))
+```
+
+Based on the diagnostic plots, the model assumptions seem to hold for `mod4w1`.
+

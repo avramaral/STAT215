@@ -32,8 +32,6 @@ head(data, 5)
 
 The code to generated such a data set can be found [here](./others/codeR.R).
 
-$\phantom{-}$
-
 ## Problem 01 {-}
 
 Now, to manipulate our data set, we will use the `dplyr` package. From [its documentation](https://dplyr.tidyverse.org/), we can see that there are 5 main methods, namely, `mutate()`, `select()`, `filter()`, `summarise()`, and `arrange()`. . We will use them all.
@@ -150,9 +148,6 @@ Now, we can incorporate the new data into the original tibble by using, for exam
 data %>% left_join(new_data %>% select(id, temperature), by = 'id') %>% 
   tail(1)
 ```
-
-
-$\phantom{-}$
 
 ## Problem 02 {-}
 
